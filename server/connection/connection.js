@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const URL = "mongodb+srv://harshit:harshit123@cluster0.17m6v.mongodb.net/COURSERIVER?retryWrites=true&w=majority";
+const URL = process.env.URI;
 
 
 const Connection = async() => {
