@@ -25,28 +25,33 @@ class AuthenticationProvider extends ChangeNotifier {
       Map<String, dynamic> parsedData = await jsonDecode(userData);
       print("AA");
       print(parsedData);
-      
+
       final userjwt = parsedData['token'];
       final code = parsedData['code'];
       final names = parsedData['name'];
       final id = parsedData['_id'];
-       var utils = Provider.of<UtilityNotifier>(context,listen: false); 
-       utils.userimage = "";
+      final admin = parsedData['admin'];
+      var utils = Provider.of<UtilityNotifier>(context, listen: false);
       print(parsedData['newUser.name']);
       print(names);
       final pic = parsedData['image'];
+      print(pic);
 
       print("Code :" + code.toString());
       if (code == 201) {
         cache.writeCache(key: "jwt", value: userjwt);
         cache.writeCache(key: "name", value: names);
+        // cache.writeCache(key: "admin",value:admin);
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString("imaged", image);
+        prefs.setString("imaged", pic);
+        prefs.setBool("admin", admin);
         setName(names);
         cache.writeCache(key: "pic", value: pic);
         cache.writeCache(key: "id", value: id);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => BottomNavigationBarExample()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => BottomNavigationBarExample()));
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Signup Successfull")));
       } else {
@@ -70,6 +75,9 @@ class AuthenticationProvider extends ChangeNotifier {
       final names = parsedData['name'];
       final id = parsedData['_id'];
       final image = parsedData['image'];
+      final admin = parsedData['admin'];
+      // cache.writeCache(key: "admin",value:admin);
+
       print(names);
       final pic = parsedData['image'];
       print("Code :" + code.toString());
@@ -80,17 +88,24 @@ class AuthenticationProvider extends ChangeNotifier {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString("imaged", image);
         prefs.setString("named", names);
+        prefs.setBool("admin", admin);
         cache.writeCache(key: "pic", value: pic);
         cache.writeCache(key: "id", value: id);
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => BottomNavigationBarExample()));
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Logged In Successfully")));
+            context,
+            MaterialPageRoute(
+                builder: (context) => BottomNavigationBarExample()));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("Logged In Successfully"),
+            backgroundColor: Colors.green));
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Invalid Credentials")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text("Invalid Credentials"), backgroundColor: Colors.red));
       }
-    } catch (e) {}
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text("Invalid Credentials"), backgroundColor: Colors.red));
+    }
   }
 
   setName(String name) {

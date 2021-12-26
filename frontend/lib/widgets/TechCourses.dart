@@ -1,12 +1,16 @@
 import 'package:courseriver/screens/CourseDetailByCategory.dart';
 import 'package:flutter/material.dart';
 
-Widget techCourses(BuildContext context,String image,String category) {
+Widget techCourses(BuildContext context,String image,String category,String id) {
   return Padding(
     padding: const EdgeInsets.only(top: 5.0, left: 8.0),
     child: GestureDetector(
       onTap: () {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>CourseDetailsCategory(category:category)));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+        CourseDetailsCategory(
+          category:id,
+          name: category,
+          )));
       },
       child: Container(
         width: 150,

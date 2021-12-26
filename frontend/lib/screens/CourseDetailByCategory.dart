@@ -9,7 +9,8 @@ import 'package:provider/provider.dart';
 
 class CourseDetailsCategory extends StatefulWidget {
   final String category;
-  const CourseDetailsCategory({Key key, this.category});
+  final String name;
+  const CourseDetailsCategory({Key key, this.category, this.name});
 
 
   @override
@@ -17,20 +18,20 @@ class CourseDetailsCategory extends StatefulWidget {
 }
 
 class _CourseDetailsCategoryState extends State<CourseDetailsCategory> {
-   var currentCourse;
-
-    Future<void> getCourse() async {
-    var response = await http.get(Uri.parse(
-        "https://courseriver.herokuapp.com/getCourseByCat/${widget.category}"));
-    print(response.body);
-    setState(() {
-      currentCourse = jsonDecode(response.body);
-    });
-  }
+  
+  //  var currentCourse;
+  //   Future<void> getCourse() async {
+  //   var response = await http.get(Uri.parse(
+  //       "https://courseriver.herokuapp.com/getCourseByCat/${widget.category}"));
+  //   print(response.body);
+  //   setState(() {
+  //     currentCourse = jsonDecode(response.body);
+  //   });
+  // }
 
   @override
   void initState() {
-    getCourse();
+    // getCourse();
     super.initState();
   }
 
@@ -49,7 +50,7 @@ class _CourseDetailsCategoryState extends State<CourseDetailsCategory> {
                 },
               ),
               title: Text(
-                widget.category + " Courses",
+                widget.name + " Courses",
                 style: TextStyle(color: Colors.white),
               ),
               centerTitle: true,

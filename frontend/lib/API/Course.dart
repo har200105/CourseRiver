@@ -131,9 +131,6 @@ class CourseAPI {
     final String url = "${API().api}/rejectCourse/${id}";
     final Uri uri = Uri.parse(url);
     final http.Response response = await client.put(uri, headers: {
-      "Content-type": "application/json",
-      "Accept": "application/json",
-      "Access-Control-Allow-Origin": "*",
       "Authorization": preferences.getString("jwt")
     });
     if (response.statusCode == 201) {
@@ -175,17 +172,19 @@ class CourseAPI {
 
   Future rateCourse(String id, String newRatings) async {
     try {
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      var jwt = preferences.getString("jwt");
+      print(jwt);
       final String url = "${API().api}/ratecourse";
       final Uri uri = Uri.parse(url);
       final http.Response response = await client.put(uri, body: {
         'courseId': id,
         'newRatings': newRatings
       }, headers: {
-        "Content-type": "application/json",
-        "Accept": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "Authorization": cache.readCache("jwt")
+        "Authorization": jwt
+        // "Authorization": cache.readCache("jwt")
       });
+      print(response.body);
       if (response.statusCode == 201) {
         print(response.body);
         return response.body;
@@ -197,14 +196,13 @@ class CourseAPI {
 
   Future rateAgain(String id) async {
     try {
+      print("cwef");
       final String url = "${API().api}/removeRating/${id}";
       final Uri uri = Uri.parse(url);
       final http.Response response = await client.put(uri, headers: {
-        "Content-type": "application/json",
-        "Accept": "application/json",
-        "Access-Control-Allow-Origin": "*",
         "Authorization": cache.readCache("jwt")
       });
+      print(response.body);
       if (response.statusCode == 201) {
         print(response.body);
         return response.body;
@@ -222,10 +220,9 @@ class CourseAPI {
         "Content-type": "application/json",
         "Accept": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "Authorization": cache.readCache("jwt")
+        // "Authorization": cache.readCache("jwt")
       });
       if (response.statusCode == 201) {
-        print(response.body);
         return response.body;
       }
     } catch (e) {
@@ -273,7 +270,8 @@ class CourseAPI {
       String coursePic,
       String channelName,
       String courseUrl,
-      String category) async {
+      String category
+      ) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       final String url = "${API().api}/addReqCourse";
@@ -292,6 +290,7 @@ class CourseAPI {
       }, headers: {
         "Authorization": prefs.getString("jwt")
       });
+      print(response.body);
       if (response.statusCode == 201) {
         print(response.body);
         return response.body;
@@ -303,7 +302,8 @@ class CourseAPI {
 
   Future getSearchedCourses(String text) async {
     try {
-      var response = await http.post(Uri.parse("https://courseriver.herokuapp.com/searchcourse"),
+      var response = await http.post(
+          Uri.parse("https://courseriver.herokuapp.com/searchcourse"),
           body: {'query': text});
 
       if (response.statusCode == 201) {
@@ -314,4 +314,42 @@ class CourseAPI {
       print(e.toString());
     }
   }
+
+  Future<void> commentCourse(String commentText, String courseId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var comment = await http.post(
+        Uri.parse("https://courseriver.herokuapp.com/addComment/${courseId}"),
+        body: {
+          'commentedText': commentText,
+        },
+        headers: {
+          'Authorization': prefs.getString("jwt")
+        });
+
+    if (comment.statusCode == 201) {
+      return comment.body;
+    }
+}
+
+Future getUserCourse()async{
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String url = "${API().api}/getUserCourse";
+   var response = await http.get(Uri.parse(url),headers: {
+     "Authorization":prefs.getString("jwt")
+   });
+
+   if(response.statusCode==201){
+     print("Ranjhaa");
+    //  print(response.body);
+     return response.body;
+   }
+
+
+
+
+
+}
+
+
 }

@@ -23,21 +23,32 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String name;
 
+  String name = "";
+  String image = "";
+  bool isAdmin = false;
   final httpClient = http.Client();
   final Cache cache = Cache();
 
   Future setName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      name = prefs.getString("named");
+      image = prefs.getString("imaged");
+      name = prefs.getString("name");
+      isAdmin = prefs.getBool("admin");
+      print(prefs.getBool("admin"));
+      print("dd");
     });
   }
 
   @override
   void initState() {
+    Provider.of<CourseProvider>(context, listen: false).getCategories();
+    Provider.of<CourseProvider>(context, listen: false).fetchRecent();
+    Provider.of<CourseProvider>(context, listen: false).fetchHighest();
+    Provider.of<CourseProvider>(context, listen: false).fetchTrending();
     super.initState();
+    setName();
   }
 
   @override
@@ -66,15 +77,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 40.0),
                                   ),
+                                  CircleAvatar(
+                                    radius: 60.0,
+                                    backgroundImage: NetworkImage(image),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(
                                         left: 10.0, top: 20.0),
                                     child: Text(
-                                      Provider.of<AuthenticationProvider>(
-                                                  context,
-                                                  listen: true)
-                                              .getName ??
-                                          name,
+                                      name ?? "",
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
@@ -94,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           fontSize: 15.0),
                                     ),
                                   ),
-                                  MaterialButton(
+                               !isAdmin ?   MaterialButton(
                                     onPressed: () {
                                       Navigator.pushReplacement(
                                           context,
@@ -103,12 +114,18 @@ class _HomeScreenState extends State<HomeScreen> {
                                     },
                                     child: Text("Admin",
                                         style: TextStyle(color: Colors.white)),
-                                  ),
+                                  ):Container(height: 0,width: 0),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: MaterialButton(
                                       onPressed: () async {
+                                        SharedPreferences preferences = await SharedPreferences.getInstance();
                                         await cache.removeCache(key: "jwt");
+                                        await cache.removeCache(key: "name");
+                                        await cache.removeCache(key: "imaged");
+                                        await cache.removeCache(key: "id");
+                                        await cache.removeCache(key: "admin");
+                                        await preferences.clear();
                                         Navigator.pushReplacement(
                                             context,
                                             MaterialPageRoute(
@@ -190,38 +207,33 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.only(top: 5.0, left: 0.0),
                       child: SizedBox(
                           height: 180.0,
-                          child: FutureBuilder(
-                              future: courseProvider(false).getCategories(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Center(
-                                      child: CircularProgressIndicator());
-                                } else if (!snapshot.hasData) {
-                                  return Center(
-                                      child: CircularProgressIndicator());
-                                } else {
-                                  return ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: snapshot.data.length,
-                                      itemBuilder: (context, index) {
-                                        CategoryData categoryData =
-                                            snapshot.data[index];
-                                        return Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 3.0),
-                                          child: Container(
-                                            child: Row(children: [
-                                              techCourses(
-                                                  context,
-                                                  categoryData.categoryPic,
-                                                  categoryData.categoryName),
-                                            ]),
-                                          ),
-                                        );
-                                      });
-                                }
-                              })),
+                          child: Consumer<CourseProvider>(
+                              builder: (context, category, snapshot) {
+                            if (category.cd.length == 0) {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            return ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: category.cd.length,
+                                itemBuilder: (context, index) {
+                                  CategoryData categoryData =
+                                      category.cd[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 3.0),
+                                    child: Container(
+                                      child: Row(children: [
+                                        techCourses(
+                                            context,
+                                            categoryData.categoryPic,
+                                            categoryData.categoryName,
+                                            categoryData.id
+                                            ),
+                                      ]),
+                                    ),
+                                  );
+                                });
+                          }
+                              )),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, left: 5.0),
@@ -234,41 +246,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(
                         height: 180.0,
-                        child: FutureBuilder(
-                            future: courseProvider(false).fetchRecent(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              } else {
-                                return ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: snapshot.data.length,
-                                    itemBuilder: (context, index) {
-                                      CourseData courseData =
-                                          snapshot.data[index];
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 3.0),
-                                        child: Container(
-                                          child: Row(children: [
-                                            recentlyAddedCourse(
-                                                context,
-                                                courseData.coursePic,
-                                                courseData.courseName,
-                                                courseData.channelName,
-                                                courseData.id,
-                                                courseData.courseRatings,
-                                                courseData.courseUrl,
-                                                courseData.courseDescription,
-                                                courseData.ratedBy),
-                                          ]),
-                                        ),
-                                      );
-                                    });
-                              }
-                            })),
+                        child: Consumer<CourseProvider>(
+                            builder: (context, courses, snapshot) {
+                          if (courses.recent.length == 0) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: courses.recent.length,
+                              itemBuilder: (context, index) {
+                                CourseData courseData = courses.recent[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 3.0),
+                                  child: Container(
+                                    child: Row(children: [
+                                      recentlyAddedCourse(
+                                          context,
+                                          courseData.coursePic,
+                                          courseData.courseName,
+                                          courseData.channelName,
+                                          courseData.id,
+                                          courseData.courseRatings,
+                                          courseData.courseUrl,
+                                          courseData.courseDescription,
+                                          courseData.ratedBy),
+                                    ]),
+                                  ),
+                                );
+                              });
+                          // }
+                        })),
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, left: 5.0),
                       child: Text(
@@ -280,37 +287,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(
                         height: 180.0,
-                        child: FutureBuilder(
-                            future: courseProvider(false).fetchHighest(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              } else {
-                                return ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: snapshot.data.length,
-                                    itemBuilder: (context, index) {
-                                      CourseData courseData =
-                                          snapshot.data[index];
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 3.0),
-                                        child: Container(
-                                          child: Row(children: [
-                                            highestRatedCourses(
-                                                context,
-                                                courseData.coursePic,
-                                                courseData.courseName,
-                                                courseData.channelName,
-                                                courseData.id),
-                                          ]),
-                                        ),
-                                      );
-                                    });
-                              }
-                            })),
+                        child: Consumer<CourseProvider>(
+                            builder: (context, courses, snapshot) {
+                          if (courses.highest.length == 0) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: courses.highest.length,
+                              itemBuilder: (context, index) {
+                                CourseData courseData = courses.highest[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 3.0),
+                                  child: Container(
+                                    child: Row(children: [
+                                      highestRatedCourses(
+                                          context,
+                                          courseData.coursePic,
+                                          courseData.courseName,
+                                          courseData.channelName,
+                                          courseData.id),
+                                    ]),
+                                  ),
+                                );
+                              });
+                        })),
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, left: 5.0),
                       child: Text(
@@ -322,37 +323,31 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     SizedBox(
                         height: 180.0,
-                        child: FutureBuilder(
-                            future: courseProvider(false).fetchTrending(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              } else {
-                                return ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: snapshot.data.length,
-                                    itemBuilder: (context, index) {
-                                      CourseData courseData =
-                                          snapshot.data[index];
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 3.0),
-                                        child: Container(
-                                          child: Row(children: [
-                                            trendingCourses(
-                                                context,
-                                                courseData.coursePic,
-                                                courseData.courseName,
-                                                courseData.channelName,
-                                                courseData.id),
-                                          ]),
-                                        ),
-                                      );
-                                    });
-                              }
-                            })),
+                        child: Consumer<CourseProvider>(
+                            builder: (context, courses, snapshot) {
+                          if (courses.trending.length == 0) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: courses.trending.length,
+                              itemBuilder: (context, index) {
+                                CourseData courseData = courses.trending[index];
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 3.0),
+                                  child: Container(
+                                    child: Row(children: [
+                                      trendingCourses(
+                                          context,
+                                          courseData.coursePic,
+                                          courseData.courseName,
+                                          courseData.channelName,
+                                          courseData.id),
+                                    ]),
+                                  ),
+                                );
+                              });
+                        })),
                   ])),
                 ));
           }

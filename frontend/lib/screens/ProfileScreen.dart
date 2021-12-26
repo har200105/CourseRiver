@@ -17,7 +17,7 @@ class _ProfileState extends State<Profile> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       name = prefs.getString("name");
-      image = prefs.getString("image");
+      image = prefs.getString("imaged");
     });
   }
 
@@ -25,7 +25,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     getUserData();
     super.initState();
-  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              image != null
+              image != null  &&  image != ""
                   ? CircleAvatar(
                       radius: 60.0,
                       backgroundImage: NetworkImage(image),

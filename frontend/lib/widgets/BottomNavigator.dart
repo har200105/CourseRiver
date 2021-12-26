@@ -26,41 +26,48 @@ class _BottomNavigationBarExampleState
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        children: currentTab,
-        controller: pageController,
-        onPageChanged: (int index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.black,
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-            pageController.animateToPage(index,
-                duration: Duration(milliseconds: 500), curve: Curves.easeIn);
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(LineIcons.home,color: Colors.white),
-            label: ""
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(LineIcons.search,color: Colors.white,),
-            label: ""
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(LineIcons.heart,color: Colors.white,),
-            label: ""
-          ),
-        ],
+    return WillPopScope(
+      onWillPop: () {
+        // Navigator.pushReplacement(context, route)
+        return Future.value(false);
+
+      },
+      child: Scaffold(
+        body: PageView(
+          children: currentTab,
+          controller: pageController,
+          onPageChanged: (int index) {
+            setState(() {
+              currentIndex = index;
+            });
+          },
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.black,
+          currentIndex: currentIndex,
+          onTap: (index) {
+            setState(() {
+              currentIndex = index;
+              pageController.animateToPage(index,
+                  duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+            });
+          },
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(LineIcons.home,color: Colors.white),
+              label: ""
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(LineIcons.search,color: Colors.white,),
+              label: ""
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(LineIcons.heart,color: Colors.white,),
+              label: ""
+            ),
+          ],
+        ),
       ),
     );
   }

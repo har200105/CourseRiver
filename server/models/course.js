@@ -39,8 +39,8 @@ const courseSchema = new mongoose.Schema({
         default:true
     },
     category: {
-        type: String,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Category"
     },
     coursePublishedOn: {
         type: String,

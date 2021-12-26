@@ -14,7 +14,9 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController searchController = TextEditingController();
+ 
   var searchedCourses;
+  bool hasSearched = false;
 
   Future<dynamic> searchCourse(String course) async {
     var response = await http.post(
@@ -42,6 +44,9 @@ class _SearchPageState extends State<SearchPage> {
               child: TextField(
                 controller: searchController,
                 onChanged: (text) {
+                  setState(() {
+                    hasSearched=true;
+                  });
                   searchCourse(text);
                 },
                 decoration: InputDecoration(
@@ -112,7 +117,7 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   );
                 } else {
-                  return CircularProgressIndicator();
+                  return  hasSearched ? CircularProgressIndicator() :Container();
                 }
               },
             ),

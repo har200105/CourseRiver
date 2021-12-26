@@ -16,7 +16,6 @@ router.get('/', (req, res) => {
 });
 
 router.post("/signup", async(req, res) => {
-    // console.log(req.body.name);
     console.log(req.body)
     const {email,password,name,image} = req.body;
     if(!email || !password || !name){

@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 class RequestACourse extends StatefulWidget {
   @override
   _RequestACourseState createState() => _RequestACourseState();
-}
+}  
 
 class _RequestACourseState extends State<RequestACourse> {
   TextEditingController courseNameController = TextEditingController();
@@ -18,8 +18,14 @@ class _RequestACourseState extends State<RequestACourse> {
   TextEditingController channeNameController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  List<String> categories = ['A', 'B', 'C', 'D'];
+  //   List<String> categories = ['MERN', 'Flutter', 'ReactNative', 'Django','Java','Python','React'
+  // ,'Angular','GraphQL','PHP'];
   String _selectedLocation;
+  @override
+  void initState() {
+     Provider.of<CourseProvider>(context, listen: false).getCategories();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var utils = Provider.of<UtilityNotifier>(context, listen: false);
@@ -176,10 +182,10 @@ class _RequestACourseState extends State<RequestACourse> {
                                 _selectedLocation = newValue;
                               });
                             },
-                            items: categories.map((location) {
+                            items: Provider.of<CourseProvider>(context,listen: false).cd.map((location) {
                               return DropdownMenuItem(
-                                child: new Text(location),
-                                value: location,
+                                child: new Text(location.categoryName),
+                                value: location.id,
                               );
                             }).toList(),
                           ),
@@ -198,12 +204,12 @@ class _RequestACourseState extends State<RequestACourse> {
                            utils.userimage,
                           channeNameController.text,
                           courseUrlController.text,
-                          _selectedLocation)
+                          _selectedLocation
+                          )
                           .whenComplete(() => {
                             courseNameController.clear(),
                             courseUrlController.clear(),
                             channeNameController.clear(),
-                            utils.userimage="",
                             courseDescriptionController.clear(),
                           });
                 },

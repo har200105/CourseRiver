@@ -1,5 +1,7 @@
 import 'package:courseriver/models/Course.dart';
 import 'package:courseriver/providers/CourseProvider.dart';
+import 'package:courseriver/screens/CourseDetail.dart';
+import 'package:courseriver/widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,7 +12,6 @@ class AcceptCourse extends StatefulWidget {
 }
 
 class _AcceptCourseState extends State<AcceptCourse> {
-  
   _launchURL(String courseLink) async {
     String url = courseLink;
     if (await canLaunch(url)) {
@@ -38,7 +39,9 @@ class _AcceptCourseState extends State<AcceptCourse> {
                     return Center(child: CircularProgressIndicator());
                   } else if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
-                  } else {
+                  } else if(snapshot.data.length==0){
+                    return Center(child: Center(child: Text("Currently No Courses To Accept"),),);
+                  } else{
                     return Flexible(
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
@@ -49,13 +52,21 @@ class _AcceptCourseState extends State<AcceptCourse> {
                               padding: EdgeInsets.all(10.0),
                               child: Expanded(
                                 child: ListTile(
-                                  onTap: (){
-                                     launch(courseData.courseUrl);
-                                  },
-                                  leading: CircleAvatar(
-                                    radius: 40.0,
-                                    backgroundImage:
-                                        NetworkImage(courseData.coursePic),
+                                  leading: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CourseDetails(
+                                                    id: courseData.id,
+                                                  )));
+                                    },
+                                    child: CircleAvatar(
+                                      radius: 40.0,
+                                      backgroundImage:
+                                          NetworkImage(courseData.coursePic),
+                                    ),
                                   ),
                                   title: Row(children: [
                                     Text(
@@ -66,16 +77,26 @@ class _AcceptCourseState extends State<AcceptCourse> {
                                         onPressed: () {
                                           courseProvider(false)
                                               .acceptCourse(courseData.id)
-                                              .whenComplete(  
-                                                  () => {print("Done")});
+                                              .whenComplete(() => {
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                BottomNavigationBarExample()))
+                                                  });
                                         },
                                         icon: Icon(Icons.check)),
                                     IconButton(
                                         onPressed: () {
-                                           courseProvider(false)
+                                          courseProvider(false)
                                               .rejectCourse(courseData.id)
-                                              .whenComplete(
-                                                  () => {print("Done")});
+                                              .whenComplete(() => {
+                                                    Navigator.pushReplacement(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                BottomNavigationBarExample()))
+                                                  });
                                         },
                                         icon: Icon(Icons.cancel)),
                                   ]),

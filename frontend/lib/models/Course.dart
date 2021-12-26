@@ -109,6 +109,7 @@ class CourseData {
 }
 
 class Comment {
+  
     Comment({
         this.id,
         this.commentedText,

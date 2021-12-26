@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:courseriver/screens/HomeScreen.dart';
 import 'package:courseriver/widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';

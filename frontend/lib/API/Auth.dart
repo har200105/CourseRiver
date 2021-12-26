@@ -21,7 +21,7 @@ class Authentication {
       'email': email,
       'password': password,
       'name': name,
-      'image': image
+      'image': image != "" ? image : "https://image.shutterstock.com/image-vector/avatar-vector-male-profile-gray-260nw-538707355.jpg"
     }, headers: {
       "Accept": "application/json",
       "Access-Control-Allow-Origin": "*"

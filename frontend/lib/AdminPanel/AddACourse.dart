@@ -1,5 +1,7 @@
 import 'package:courseriver/Services/Utility.dart';
+import 'package:courseriver/models/Category.dart';
 import 'package:courseriver/providers/AdminProvider.dart';
+import 'package:courseriver/providers/CourseProvider.dart';
 import 'package:courseriver/widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,10 +17,29 @@ class _AddACourseState extends State<AddACourse> {
   TextEditingController courseDescriptionController = TextEditingController();
   TextEditingController courseUrlController = TextEditingController();
   TextEditingController channeNameController = TextEditingController();
+  Category category =  Category();
+
+  @override
+  void initState() {
+      Provider.of<CourseProvider>(context, listen: false).getCategories();
+    super.initState();
+  }
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  List<String> categories = ['A', 'B', 'C', 'D'];
-  String _selectedLocation;
+
+  // List<String> categories = [
+  //   'MERN',
+  //   'Flutter',
+  //   'ReactNative',
+  //   'Django',
+  //   'Java',
+  //   'Python',
+  //   'React',
+  //   'Angular',
+  //   'GraphQL',
+  //   'PHP'
+  // ];
+  String catSelected;
   @override
   Widget build(BuildContext context) {
     var utils = Provider.of<UtilityNotifier>(context, listen: false);
@@ -42,22 +63,20 @@ class _AddACourseState extends State<AddACourse> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-                   userImage.isNotEmpty
-                    ? Column(
-                      children:[ 
-                        CircleAvatar(
+              userImage.isNotEmpty
+                  ? Column(children: [
+                      CircleAvatar(
                         radius: 60.0,
-                          backgroundImage: NetworkImage(utils.userimage),
-                        ),
-                        Text("Course Image")
-                      ]
-                    )
-                    : Container(
-                        height: 0,
-                        width: 0,
+                        backgroundImage: NetworkImage(utils.userimage),
                       ),
+                      Text("Course Image")
+                    ])
+                  : Container(
+                      height: 0,
+                      width: 0,
+                    ),
               Padding(
-                padding: const EdgeInsets.only(top:10.0),
+                padding: const EdgeInsets.only(top: 10.0),
                 child: Form(
                   key: _formKey,
                   child: Expanded(
@@ -110,7 +129,6 @@ class _AddACourseState extends State<AddACourse> {
                             ),
                           ),
                         ),
-                       
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
@@ -134,26 +152,24 @@ class _AddACourseState extends State<AddACourse> {
                             ),
                           ),
                         ),
-                             ElevatedButton(
-                    onPressed: () {
-                      utils.uploadImage();
-                    },
+                        ElevatedButton(
+                          onPressed: utils.uploadImage,
                           style: ButtonStyle(
-                            backgroundColor:MaterialStateProperty.all(
-                              Colors.black
-                            ),
-                              shape:
-                                  MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(12.0),
-                                          side: BorderSide(
-                                              color: Colors.white, width: 4.0)))),
-                    child: Text(utils.userimage.isEmpty
-                        ? "Upload Course Image"
-                        : "Reselect Image",style: TextStyle(
-                      color: Colors.white
-                    ),),
-                  ),
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.black),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      side: BorderSide(
+                                          color: Colors.white, width: 4.0)))),
+                          child: Text(
+                            utils.userimage.isEmpty
+                                ? "Upload Course Image"
+                                : "Reselect Image",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
@@ -181,16 +197,19 @@ class _AddACourseState extends State<AddACourse> {
                           padding: const EdgeInsets.all(8.0),
                           child: DropdownButton(
                             hint: Text('Choose a Category'),
-                            value: _selectedLocation,
+                            value: catSelected,
                             onChanged: (newValue) {
+                              print(newValue + ": Value");
                               setState(() {
-                                _selectedLocation = newValue;
+                                catSelected = newValue;
+                                print(catSelected);
                               });
                             },
-                            items: categories.map((location) {
+                            items: Provider.of<CourseProvider>(context,listen: false).cd.
+                            map((location) {
                               return DropdownMenuItem(
-                                child: new Text(location),
-                                value: location,
+                                child: new Text(location.categoryName),
+                                value: location.id,
                               );
                             }).toList(),
                           ),
@@ -206,17 +225,21 @@ class _AddACourseState extends State<AddACourse> {
                       .addCourse(
                           courseNameController.text,
                           courseDescriptionController.text,
-                           utils.userimage,
+                          utils.userimage,
                           channeNameController.text,
                           courseUrlController.text,
-                          _selectedLocation)
-                          .whenComplete(() => {
+                          catSelected)
+                      .whenComplete(() => {
                             courseNameController.clear(),
                             courseUrlController.clear(),
                             channeNameController.clear(),
-                            utils.userimage="",
                             courseDescriptionController.clear(),
-                            _selectedLocation=""
+                            catSelected = "",
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        BottomNavigationBarExample()))
                           });
                 },
                 style: ButtonStyle(

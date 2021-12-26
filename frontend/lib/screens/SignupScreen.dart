@@ -27,8 +27,6 @@ class _SignUpState extends State<SignUp> {
 
   final httpClient = http.Client();
 
-
-
   final formkey = GlobalKey<FormState>();
   bool isShow = true;
   String email = "";
@@ -41,32 +39,38 @@ class _SignUpState extends State<SignUp> {
     super.initState();
   }
 
+  bool validateEmail(String value) {
+    Pattern pattern =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+    RegExp regex = new RegExp(pattern);
+    return (!regex.hasMatch(value)) ? false : true;
+  }
+
   @override
   Widget build(BuildContext context) {
     var auth = Provider.of<AuthenticationProvider>(context, listen: false);
-    var utils = Provider.of<UtilityNotifier>(context,listen: false); 
-     var userImage =
+    var utils = Provider.of<UtilityNotifier>(context, listen: false);
+    var userImage =
         Provider.of<UtilityNotifier>(context, listen: true).userimage;
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: (){
-             Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => BottomNavigationBarExample()));
-        }, icon: Icon(Icons.arrow_back)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BottomNavigationBarExample()));
+            },
+            icon: Icon(Icons.arrow_back)),
         backgroundColor: Colors.black,
-        title: Text("Course River",style: TextStyle(
-          color: Colors.white
-        )),
+        title: Text("Course River", style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
       body: Container(
         height: 900.0,
         width: 900.0,
-        child: Column(
-        children: [
+        child: Column(children: [
           Padding(
             padding: EdgeInsets.only(top: 10.0),
             child: Row(
@@ -75,8 +79,8 @@ class _SignUpState extends State<SignUp> {
                   icon: Icon(Icons.arrow_back_ios, color: Colors.white),
                   onPressed: () {
                     Navigator.pushReplacement(
-                        context,(
-                          MaterialPageRoute(
+                        context,
+                        (MaterialPageRoute(
                             builder: (context) =>
                                 BottomNavigationBarExample())));
                   },
@@ -84,47 +88,50 @@ class _SignUpState extends State<SignUp> {
               ],
             ),
           ),
-           userImage.isNotEmpty
-                  ? CircleAvatar(
-                    radius: 60.0,
-                      backgroundImage: NetworkImage(utils.userimage),
-                    )
-                  : Container(
-                      height: 0,
-                      width: 0,
-                    ),
+          userImage.isNotEmpty
+              ? CircleAvatar(
+                  radius: 60.0,
+                  backgroundImage: NetworkImage(utils.userimage),
+                )
+              : Container(
+                  height: 0,
+                  width: 0,
+                ),
           Form(
             key: formkey,
-            child: Column(children: [
-              Text("Signup",style:TextStyle(
-                fontSize: 25
-              )),
+            child: Column(
+              children: [
+              Text("Signup", style: TextStyle(fontSize: 25)),
               Padding(
                 padding:
-                    const EdgeInsets.only(top:25,left: 80.0, right: 80.0),
+                    const EdgeInsets.only(top: 25, left: 80.0, right: 80.0),
                 child: TextFormField(
                   controller: userNameEditingController,
                   // validator: (val)=> val.isEmpty ? "Enter Email Please":null,
-                  onChanged: (val) {
-                    setState(() {
-                      email = val;
-                    });
+                  // ignore: missing_return
+                  validator: (a) {
+                    if (userNameEditingController.text.isEmpty || userNameEditingController.text.length<=0) {
+                      return "Name Required";
+                    }
                   },
+                  // onChanged: (val) {
+                  //   setState(() {
+                  //     email = val;
+                  //   });
+                  // },
                   decoration: InputDecoration(
-                     focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black, width: 2.0),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black, width: 2.0),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                     labelText: "Enter your Name",
-                    hintStyle: TextStyle(
-                        fontSize: 18.0,
-                        color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    labelText: "Enter your Name",
+                    hintStyle: TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                 ),
               ),
@@ -138,31 +145,25 @@ class _SignUpState extends State<SignUp> {
                         email = val;
                       });
                     },
-                    style:
-                        TextStyle(color: Colors.black),
+                    style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: "Enter your Email",
                       focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black, width: 2.0),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black, width: 2.0),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                      hintStyle: TextStyle(
-                          fontSize: 18.0,
-                          color: Colors.black),
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                      hintStyle: TextStyle(fontSize: 18.0, color: Colors.black),
                     ),
                     //ignore:missing_return
                     validator: (text) {
-                      if (!isEmail(text)) {
-                        print("Not a valid email");
-                        return "Please Enter a Valid Email";
-                      } else {
-                        print("Valid");
+                      if (!validateEmail(emailEditingController.text.trim())) {
+                        return "Invalid Email";
                       }
                     }),
               ),
@@ -174,6 +175,12 @@ class _SignUpState extends State<SignUp> {
                     setState(() {
                       password = val;
                     });
+                  },
+                  // ignore: missing_return
+                  validator: (value) {
+                    if ((passwordController.text.length < 6)) {
+                      return "Password Should Be Of Minimum Length 6";
+                    }
                   },
                   obscureText: isShow,
                   style: TextStyle(color: Colors.black),
@@ -191,85 +198,74 @@ class _SignUpState extends State<SignUp> {
                         fontSize: 18.0,
                         fontFamily: 'Comic',
                         color: Colors.black),
-                         focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black, width: 2.0),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black, width: 2.0),
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
                   ),
                 ),
               ),
-               SizedBox(
+              SizedBox(
                 height: 10,
               ),
               ElevatedButton(
                 onPressed: () {
                   utils.uploadImage();
                 },
-                      style: ButtonStyle(
-                        backgroundColor:MaterialStateProperty.all(
-                          Colors.black
-                        ),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      side: BorderSide(
-                                          color: Colors.white, width: 4.0)))),
-                child: Text(utils.userimage.isEmpty
-                    ? "Upload Image"
-                    : "Reselect Image",style: TextStyle(
-                  color: Colors.white
-                ),),
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.black),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            side:
+                                BorderSide(color: Colors.white, width: 4.0)))),
+                child: Text(
+                  utils.userimage.isEmpty ? "Upload Image" : "Reselect Image",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: ElevatedButton(
-                  
-                     style: ButtonStyle(
-                       
-                        backgroundColor:MaterialStateProperty.all(
-                          Colors.black
-                        ),
-                        
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      side: BorderSide(
-                                          color: Colors.white, width: 2.0)))),
-           
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.black),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    side: BorderSide(
+                                        color: Colors.white, width: 2.0)))),
                     onPressed: () async {
-                       auth.Signup(
-                          context,
-                          userNameEditingController.text,
-                          emailEditingController.text,
-                          passwordController.text,
-                          utils.userimage
-                          );
+                      FocusScope.of(context).unfocus();
+                      if (formkey.currentState.validate()) {
+                        auth.Signup(
+                            context,
+                            userNameEditingController.text.trim(),
+                            emailEditingController.text.trim(),
+                            passwordController.text.trim(),
+                            utils.userimage);
+                      }
                     },
-                    child: Text("Signup",
-                        style: TextStyle(color: Colors.white))),
+                    child:
+                        Text("Signup", style: TextStyle(color: Colors.white))),
               ),
-
-       
-
-               Padding(
+              Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: TextButton(
                     onPressed: () async {
-                              Navigator.pushReplacement(context,
+                      Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => Login()));
                     },
                     child: Text("Already a User ?",
                         style: TextStyle(color: Colors.black))),
               ),
-
             ]),
           ),
         ]),

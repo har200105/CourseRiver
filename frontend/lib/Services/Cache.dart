@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Cache {
+  
   readCache(String key) async {
     final SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance();
@@ -19,4 +20,5 @@ class Cache {
         await SharedPreferences.getInstance();
     await sharedPreferences.remove(key);
   }
+
 }

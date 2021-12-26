@@ -11,7 +11,7 @@ class AdminProvider extends ChangeNotifier{
     return response;
     }catch(e){
       print(e.toString());
-    }
+    }  
   }
 
 }
