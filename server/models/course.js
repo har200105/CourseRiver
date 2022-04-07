@@ -49,9 +49,15 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    ratedBy: [{
-        type: ObjectId,
-        ref: "User"
+    ratings: [{
+        ratedBy: {
+            type: ObjectId,
+            ref:"User"
+        },
+        ratingsGiven: {
+            type: String,
+            required: true
+        }
     }],
     hasBeenCommented:{
         type:Boolean,

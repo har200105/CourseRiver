@@ -39,9 +39,13 @@ class _AcceptCourseState extends State<AcceptCourse> {
                     return Center(child: CircularProgressIndicator());
                   } else if (!snapshot.hasData) {
                     return Center(child: CircularProgressIndicator());
-                  } else if(snapshot.data.length==0){
-                    return Center(child: Center(child: Text("Currently No Courses To Accept"),),);
-                  } else{
+                  } else if (snapshot.data.length == 0) {
+                    return Center(
+                      child: Center(
+                        child: Text("Currently No Courses To Accept"),
+                      ),
+                    );
+                  } else {
                     return Flexible(
                       child: ListView.builder(
                           scrollDirection: Axis.vertical,
@@ -49,7 +53,7 @@ class _AcceptCourseState extends State<AcceptCourse> {
                           itemBuilder: (context, index) {
                             CourseData courseData = snapshot.data[index];
                             return Padding(
-                              padding: EdgeInsets.all(10.0),
+                              padding: EdgeInsets.all(5.0),
                               child: Expanded(
                                 child: ListTile(
                                   leading: GestureDetector(
@@ -63,7 +67,7 @@ class _AcceptCourseState extends State<AcceptCourse> {
                                                   )));
                                     },
                                     child: CircleAvatar(
-                                      radius: 40.0,
+                                      radius: 20.0,
                                       backgroundImage:
                                           NetworkImage(courseData.coursePic),
                                     ),
@@ -71,7 +75,9 @@ class _AcceptCourseState extends State<AcceptCourse> {
                                   title: Row(children: [
                                     Text(
                                       courseData.courseName,
-                                      style: TextStyle(color: Colors.black),
+                                      // overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 10.0),
                                     ),
                                     IconButton(
                                         onPressed: () {

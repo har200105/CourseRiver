@@ -51,27 +51,16 @@ class _CourseDetailsState extends State<CourseDetails> {
     setState(() {
       name = preferences.getString("name");
       if (id != null) {
-        print("iddd : "+ id);
+        print("iddd : " + id);
         isLoggedIn = true;
       }
     });
-    // setState(() {
     if (Provider.of<CourseProvider>(context, listen: false)
         .courseData
         .ratedBy
         .contains(id)) {
-      setState(() {
-        // isAlreadyRated = true;
-      });
+      setState(() {});
     } else {}
-
-    // setState(() {
-    //   currentRatings = double.parse(
-    //       Provider.of<CourseProvider>(context, listen: true)
-    //           .courseData
-    //           .courseRatings);
-    // });
-    // });
   }
 
   Future<void> rateAgain() async {
@@ -81,11 +70,16 @@ class _CourseDetailsState extends State<CourseDetails> {
     var response = await http.put(
         Uri.parse(
             "https://courseriver.herokuapp.com/removeRating/${widget.id}"),
-        headers: {"Authorization": ids},
-        body: {'newRatings': ((currentRatings + 3) / 2).toString()}).then((value) => {
-          Provider.of<CourseProvider>(context,listen: false).getCourseData(widget.id)
+        headers: {
+          "Authorization": ids
+        },
+        body: {
+          'newRatings': ((currentRatings + 3) / 2).toString()
+        }).then((value) => {
+          Provider.of<CourseProvider>(context, listen: false)
+              .getCourseData(widget.id)
         });
-   
+
     setState(() {
       // isAlreadyRated = false;
       currentRatings = ((currentRatings + 3) / 2);
@@ -97,11 +91,12 @@ class _CourseDetailsState extends State<CourseDetails> {
   void initState() {
     // String cr="";
     Provider.of<CourseProvider>(context, listen: false)
-        .getCourseData(widget.id).then((value) => {
-          setState((){
-            currentRatings = double.parse(value.courseRatings);
-          })
-        });
+        .getCourseData(widget.id)
+        .then((value) => {
+              setState(() {
+                currentRatings = double.parse(value.courseRatings);
+              })
+            });
     setUser();
     super.initState();
   }
@@ -145,7 +140,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                   backgroundImage: NetworkImage(course.courseData.coursePic),
                 ),
               ),
-              !course.courseData.ratedBy.contains(idU) && isLoggedIn 
+              !course.courseData.ratedBy.contains(idU) && isLoggedIn
                   ? RatingBar(
                       initialRating: 0,
                       minRating: 0,
@@ -213,7 +208,8 @@ class _CourseDetailsState extends State<CourseDetails> {
                           setState(() {
                             currentRatings = ((currentRatings + newRating) / 2);
                             // isAlreadyRated = true;
-                             Provider.of<CourseProvider>(context, listen: false).getCourseData(widget.id);
+                            Provider.of<CourseProvider>(context, listen: false)
+                                .getCourseData(widget.id);
                             isShow = false;
                           });
                           showDialog(
@@ -240,7 +236,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                   : Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Center(
-                        child: Text(!course.courseData.ratedBy.contains(idU) 
+                        child: Text(!course.courseData.ratedBy.contains(idU)
                             ? "Rate This Course !!"
                             : "You can Rate Again"),
                       ),
@@ -289,7 +285,12 @@ class _CourseDetailsState extends State<CourseDetails> {
                         child: Text(
                             "Ratings :" +
                                 currentRatings.toStringAsFixed(2) +
-                                "⭐" + " (" +(course.courseData.ratedBy.length + 1).toString() + " Reviews" + ")",
+                                "⭐" +
+                                " (" +
+                                (course.courseData.ratedBy.length + 1)
+                                    .toString() +
+                                " Reviews" +
+                                ")",
                             style: TextStyle(color: Colors.white)),
                       ),
                     ],
@@ -352,7 +353,9 @@ class _CourseDetailsState extends State<CourseDetails> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              commentWidget(course)
+              course.courseData.comments.length == 0
+                  ? Text("No Comments Available")
+                  : commentWidget(course)
             ],
           ),
         ),

@@ -23,7 +23,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   String name = "";
   String image = "";
   bool isAdmin = false;
@@ -37,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
       name = prefs.getString("name");
       isAdmin = prefs.getBool("admin");
       print(prefs.getBool("admin"));
-      print("dd");
     });
   }
 
@@ -49,6 +47,11 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<CourseProvider>(context, listen: false).fetchTrending();
     super.initState();
     setName();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -105,21 +108,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                           fontSize: 15.0),
                                     ),
                                   ),
-                               !isAdmin ?   MaterialButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Admin()));
-                                    },
-                                    child: Text("Admin",
-                                        style: TextStyle(color: Colors.white)),
-                                  ):Container(height: 0,width: 0),
+                                  !isAdmin
+                                      ? MaterialButton(
+                                          onPressed: () {
+                                            Navigator.pushReplacement(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        Admin()));
+                                          },
+                                          child: Text("Admin",
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                        )
+                                      : Container(height: 0, width: 0),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: MaterialButton(
                                       onPressed: () async {
-                                        SharedPreferences preferences = await SharedPreferences.getInstance();
+                                        SharedPreferences preferences =
+                                            await SharedPreferences
+                                                .getInstance();
                                         await cache.removeCache(key: "jwt");
                                         await cache.removeCache(key: "name");
                                         await cache.removeCache(key: "imaged");
@@ -226,14 +235,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                             context,
                                             categoryData.categoryPic,
                                             categoryData.categoryName,
-                                            categoryData.id
-                                            ),
+                                            categoryData.id),
                                       ]),
                                     ),
                                   );
                                 });
-                          }
-                              )),
+                          })),
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, left: 5.0),

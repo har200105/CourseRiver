@@ -99,8 +99,7 @@ class _SignUpState extends State<SignUp> {
                 ),
           Form(
             key: formkey,
-            child: Column(
-              children: [
+            child: Column(children: [
               Text("Signup", style: TextStyle(fontSize: 25)),
               Padding(
                 padding:
@@ -110,15 +109,11 @@ class _SignUpState extends State<SignUp> {
                   // validator: (val)=> val.isEmpty ? "Enter Email Please":null,
                   // ignore: missing_return
                   validator: (a) {
-                    if (userNameEditingController.text.isEmpty || userNameEditingController.text.length<=0) {
+                    if (userNameEditingController.text.isEmpty ||
+                        userNameEditingController.text.length <= 0) {
                       return "Name Required";
                     }
                   },
-                  // onChanged: (val) {
-                  //   setState(() {
-                  //     email = val;
-                  //   });
-                  // },
                   decoration: InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderSide:

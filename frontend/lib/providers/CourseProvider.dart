@@ -8,15 +8,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CourseProvider extends ChangeNotifier {
   CourseAPI courseAPI = CourseAPI();
-  
+
   List<CategoryData> cd = [];
-  List<CourseData> recent=[];
-  List<CourseData> highest=[];
-  List<CourseData> trending=[];
-  CourseData courseData=CourseData();
+  List<CourseData> recent = [];
+  List<CourseData> highest = [];
+  List<CourseData> trending = [];
+  CourseData courseData = CourseData();
   List<CourseData> userRatedCourse = [];
-
-
 
   Future fetchCourse() async {
     try {
@@ -46,7 +44,7 @@ class CourseProvider extends ChangeNotifier {
       var response = await courseAPI.fetchRecent();
       var modelledData = Course.fromJson(jsonDecode(response));
       print(modelledData.data);
-      recent =  modelledData.data;
+      recent = modelledData.data;
       notifyListeners();
     } catch (e) {
       print(e.toString());
@@ -120,10 +118,11 @@ class CourseProvider extends ChangeNotifier {
       String courseDescription,
       String coursePic,
       String channelName,
-      String courseUrl,String category) async {
+      String courseUrl,
+      String category) async {
     try {
       var response = courseAPI.addCourseReq(courseName, courseDescription,
-          coursePic, channelName, courseUrl,category);
+          coursePic, channelName, courseUrl, category);
       return response;
     } catch (e) {
       print(e.toString());
@@ -134,8 +133,7 @@ class CourseProvider extends ChangeNotifier {
     try {
       var response = await courseAPI.fetchCategories();
       var modelledData = Category.fromJson(jsonDecode(response));
-      // print(modelledData.data);
-      cd =  modelledData.data;
+      cd = modelledData.data;
       notifyListeners();
       print("CD");
       print(cd[0].categoryName);
@@ -146,9 +144,9 @@ class CourseProvider extends ChangeNotifier {
 
   Future rateCourse(String id, String newRatings) async {
     try {
-      var response = await courseAPI.rateCourse(id, newRatings).then((value) =>{
-      getCourseData(id)
-      });
+      var response = await courseAPI
+          .rateCourse(id, newRatings)
+          .then((value) => {getCourseData(id)});
       return response;
     } catch (e) {
       print(e.toString());
@@ -157,9 +155,8 @@ class CourseProvider extends ChangeNotifier {
 
   Future rateAgain(String id) async {
     try {
-      var response = await courseAPI.rateAgain(id).then((value) => {
-       getCourseData(id)
-      });
+      var response =
+          await courseAPI.rateAgain(id).then((value) => {getCourseData(id)});
       return response;
     } catch (e) {
       print(e.toString());
@@ -169,8 +166,6 @@ class CourseProvider extends ChangeNotifier {
   Future getCourseData(String id) async {
     try {
       var response = await courseAPI.getCourseData(id);
-      print("Response :");
-      print(response);
       var modelledData = CourseData.fromJson(jsonDecode(response));
       courseData = modelledData;
       notifyListeners();
@@ -181,31 +176,26 @@ class CourseProvider extends ChangeNotifier {
     }
   }
 
-  Future commentCourse(String commentText,String courseId) async {
+  Future commentCourse(String commentText, String courseId) async {
     try {
-      var response = await courseAPI.commentCourse(commentText, courseId).then((value) => {
-        getCourseData(courseId)
-      });
+      var response = await courseAPI
+          .commentCourse(commentText, courseId)
+          .then((value) => {getCourseData(courseId)});
       return response;
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future userRatedCourses()async{
-   try {
-      // var response = await courseAPI.commentCourse(commentText, courseId);
-      // return response;
+  Future userRatedCourses() async {
+    try {
       var response = await courseAPI.getUserCourse();
       print("Response :" + response);
       var modelledData = Course.fromJson(jsonDecode(response));
-      print("efrwv");
-      // print(modelledData.data[0].category);
       userRatedCourse = modelledData.data;
       notifyListeners();
-      // return response;
     } catch (e) {
       print(e.toString());
-    } 
+    }
   }
 }

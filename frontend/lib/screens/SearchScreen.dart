@@ -14,7 +14,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   TextEditingController searchController = TextEditingController();
- 
+
   var searchedCourses;
   bool hasSearched = false;
 
@@ -25,7 +25,6 @@ class _SearchPageState extends State<SearchPage> {
 
     setState(() {
       searchedCourses = jsonDecode(response.body);
-      print(searchedCourses[0]['_id']);
     });
   }
 
@@ -34,6 +33,14 @@ class _SearchPageState extends State<SearchPage> {
     CourseProvider courseProvider(bool renderUi) =>
         Provider.of<CourseProvider>(context, listen: renderUi);
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(
+          "Course River",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.black,
+      ),
       body: Column(
         children: [
           Padding(
@@ -45,14 +52,14 @@ class _SearchPageState extends State<SearchPage> {
                 controller: searchController,
                 onChanged: (text) {
                   setState(() {
-                    hasSearched=true;
+                    hasSearched = true;
                   });
                   searchCourse(text);
                 },
                 decoration: InputDecoration(
                   suffixIcon: IconButton(
                     onPressed: () {
-                      searchedCourses(searchController.text);
+                      searchCourse(searchController.text);
                     },
                     icon: Icon(
                       Icons.search,
@@ -117,7 +124,9 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                   );
                 } else {
-                  return  hasSearched ? CircularProgressIndicator() :Container();
+                  return hasSearched
+                      ? CircularProgressIndicator()
+                      : Container();
                 }
               },
             ),

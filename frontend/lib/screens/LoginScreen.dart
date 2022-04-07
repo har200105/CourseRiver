@@ -1,5 +1,6 @@
 import 'package:courseriver/Services/Cache.dart';
 import 'package:courseriver/providers/UserProvider.dart';
+import 'package:courseriver/screens/ResetPassword.dart';
 import 'package:courseriver/screens/SignupScreen.dart';
 import 'package:courseriver/widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
@@ -82,13 +83,8 @@ class _LoginState extends State<Login> {
                 padding:
                     const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
                 child: TextFormField(
-                  focusNode: FocusNode(),
+                    focusNode: FocusNode(),
                     controller: emailEditingController,
-                    // onChanged: (val) {
-                    //   setState(() {
-                    //     email = val;
-                    //   });
-                    // },
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: "Enter your Email",
@@ -106,7 +102,6 @@ class _LoginState extends State<Login> {
                     ),
                     //ignore:missing_return
                     validator: (a) {
-                      // emailEditingController.text
                       if (!validateEmail(emailEditingController.text.trim())) {
                         return "Invalid Email";
                       }
@@ -117,11 +112,6 @@ class _LoginState extends State<Login> {
                 child: TextFormField(
                   focusNode: FocusNode(),
                   controller: passwordController,
-                  // onChanged: (val) {
-                  //   setState(() {
-                  //     password = val;
-                  //   });
-                  // },
                   obscureText: isShow,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
@@ -166,8 +156,7 @@ class _LoginState extends State<Login> {
                     onPressed: () async {
                       FocusScope.of(context).unfocus();
                       if (formkey.currentState.validate()) {
-                        print("Validated");
-                        auth.Login(
+                        auth.LoginService(
                           context,
                           emailEditingController.text.trim(),
                           passwordController.text.trim(),
@@ -178,6 +167,18 @@ class _LoginState extends State<Login> {
                     },
                     child:
                         Text("Login", style: TextStyle(color: Colors.white))),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: TextButton(
+                    onPressed: () async {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ResetPassword()));
+                    },
+                    child: Text("Forget Password ?",
+                        style: TextStyle(color: Colors.black))),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),

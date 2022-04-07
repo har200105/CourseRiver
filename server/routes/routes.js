@@ -9,23 +9,40 @@ const reqLogin = require('../middleware/reqLogin');
 const jwt = require('jsonwebtoken');
 const Category = require('../models/category');
 const Comment = require('../models/comment');
-
+const OTP = require('../models/otp');
+const otpgen = require('otp-generator');
+const { sendOTP } = require('../utils/mail');
 
 router.get('/', (req, res) => {
     res.send("CourseRiver");
 });
 
 router.post("/signup", async(req, res) => {
-    console.log(req.body)
+    console.log(req.body);
     const {email,password,name,image} = req.body;
     if(!email || !password || !name){
-        return res.status(401).json({error:"Please Add All The Feilds"})
+        return res.status(401).json({message:"Please Add All The Feilds",success:false})
     }
     try {
-        const exist = await User.findOne({email})
+        const exist = await User.findOne({ email });
+        
         if (exist) {
-            return res.status(401).json({message:"User Already Exists"});
-        } else {
+            return res.json({success:false,message:"User Already Exists"});
+        }
+        
+        else {
+            const otp = otpgen.generate(6, {
+                digits: true,
+                lowerCaseAlphabets: false,
+                upperCaseAlphabets: false,
+                specialChars: false
+            });
+            const newOTP = await OTP({
+                email,
+                otp
+            });
+            await newOTP.save();
+            sendOTP(email, otp);
             b.hash(password, 8)
             .then(async(hashedpassword) => {
             const newUser = User({
@@ -35,15 +52,13 @@ router.post("/signup", async(req, res) => {
                 image
             });
             await newUser.save();
-            const token = jwt.sign({ _id: newUser._id }, process.env.JWT_KEY);
-            res.status(200).json({name:newUser.name,
-                email:newUser.email,image:newUser.image,token,_id:newUser._id,code:201});
-
+            // const token = jwt.sign({ _id: newUser._id }, process.env.JWT_KEY);
+            return res.status(200).json({message:"Otp sent successfully",success:true});
         })
     }
     } catch (e) {
         console.log(e.message);
-        res.json("Error :" + e.message);
+        res.status(500).json("Error :" + e.message);
     }
 });
 
@@ -52,19 +67,25 @@ router.post("/login", async(req, res) => {
     const {email,password} = req.body;
     try {
         const exist = await User.findOne({email});
-        if (exist) {
+        console.log(exist);
+        if (exist && exist.verified) {
             b.compare(password,exist.password).then((matched)=>{
                 if(matched){
                 const token = jwt.sign({ _id: exist._id }, process.env.JWT_KEY);
                 return res.status(200).json({name:exist.name,
-                   image:exist.image,email:exist.email,token,code:201});
+                    image: exist.image, email: exist.email, token,
+                verified:true,success:true
+                });
                 }else{
-                    return res.status(401).json({message:"You are an unauthorized member"})
+                    return res.json({message:"Invalid Email or Password",success:false,verified:true})
                 }
             });
-           
-        } else {
-            res.status(401).json({message:"You are an unauthorized member"});
+        }
+            if (exist !==null && !exist?.verifed) {
+             return res.json({verified:false,success:true,message:"Please Verify your email"});
+            }
+        else {
+            res.json({message:"User Doesnt Exist",success:false,verified:false});
         }
     } catch (e) {
         console.log(e);
@@ -72,15 +93,93 @@ router.post("/login", async(req, res) => {
 });
 
 
+router.post('/verifyOTP', async (req, res) => {
+    const checkotp = await OTP.findOne({ otp: req.body.otp, email:req.body.email });
+    console.log(checkotp);
+    if (!checkotp) {
+        return res.json({message:"Not a Valid OTP",success:false});
+    } else {
+        await User.findOneAndUpdate({
+            email: checkotp.email
+        }, { 
+            verified: true
+        }, {
+            new: true
+        }).then(async (s) => {
+            console.log(s)
+            await OTP.findOneAndDelete({ email: checkotp.email });
+        }).then(() => {
+            res.status(200).json({
+                message: "OTP Verified Successfully",
+                success:false
+            })
+        })
+    }
+});
+
+router.post('/resetPassword', async (req, res) => {
+    const checkotp = await OTP.findOne({ otp: req.body.otp, email:req.body.email });
+    console.log(checkotp);
+    if (!checkotp) {
+        return res.status(401).json({message:"Not a Valid OTP",success:false});
+    } else {
+        const hashedpassword = b.hash(req.body.password,10);
+        await User.findOneAndUpdate({
+            email: checkotp.email,
+            verifed:true
+        }, {
+            password:hashedpassword
+        }, {
+            new: true
+        }).then(async () => {
+            await OTP.findOneAndDelete({ email: checkotp.email });
+        }).then(() => {
+            res.status(200).json({
+                message: "Password Changed Successfully",
+                success:true                
+            })
+        })
+    }
+});
+
+router.post('/sendforgotpasswordOTP', async (req, res) => {
+    const { email } = req.body;
+    const user = await User.find({ email });
+    if (!user) {
+      return res.status(201).json({
+        success: false,
+        message: "User not found"
+    });
+    }
+    const otp = otpgen.generate(6, {
+            digits: true,
+            lowerCaseAlphabets: false,
+            upperCaseAlphabets: false,
+            specialChars: false
+        });
+    const newOTP = await OTP({
+        otp,
+        email
+    });
+    await newOTP.save();
+    sendOTP(email, otp);
+    res.status(201).json({
+        success: true,
+        message: "Forgot Password OTP Sent"
+    });
+});
+
+
+
+
+
 
 router.get('/allcourses', (req, res) => {
-    Courses.find()
+    Courses.find({})
         .sort('-createdAt')
         .populate("comments","commentedText commentedBy")        
         .then(courses => {
-            res.status(201).json({data:courses})
-      
-            console.log(courses[0].coursePic);
+            res.status(201).json({ data: courses });
         })
         .catch((err) => {
             console.log(err)
@@ -175,16 +274,16 @@ router.post('/addReqCourse',reqLogin,async(req,res)=>{
 
 
 
-router.put('/ratecourse', reqLogin,async(req, res) => {
+router.put('/ratecourse', reqLogin, async (req, res) => {
     const updateRatings = await Courses.findByIdAndUpdate(req.body.courseId, {
         courseRatings: req.body.newRatings,
         $push: {
-            ratedBy: req.user._id
+            ratings: req.user._id
         }
     });
     const addInUser = await User.findByIdAndUpdate(req.user._id, {
         $push: {
-            ratingsGiven: await Courses.findById(req.body.courseId)
+            ratingsGiven: req.body.courseId
         }
     });
 
@@ -254,10 +353,9 @@ router.put('/removeRating/:id', reqLogin,async(req, res) => {
 
     const removeFromUser = await User.findByIdAndUpdate(req.user._id, {
         $pull: {
-            ratingGiven: await Courses.findById(req.params.id)
+            ratingGiven:req.params.id
         }
     })
-
     res.status(201).json(ress, removeFromUser);
 });
 
