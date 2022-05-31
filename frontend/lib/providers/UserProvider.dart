@@ -107,7 +107,7 @@ class AuthenticationProvider extends ChangeNotifier {
   Future resetPassword(
       BuildContext context, String email, String password, String otp) async {
     try {
-      var userData = await authentication.loginUser(email, password);
+      var userData = await authentication.resetPassword(email, password, otp);
       Map<String, dynamic> parsedData = await jsonDecode(userData);
       print(parsedData);
       final success = parsedData['success'];

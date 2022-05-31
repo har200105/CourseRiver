@@ -1,10 +1,8 @@
 import 'dart:convert';
-
 import 'package:courseriver/providers/CourseProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
 import 'CourseDetail.dart';
 
 class SearchPage extends StatefulWidget {

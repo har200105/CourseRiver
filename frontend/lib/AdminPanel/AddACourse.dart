@@ -17,11 +17,11 @@ class _AddACourseState extends State<AddACourse> {
   TextEditingController courseDescriptionController = TextEditingController();
   TextEditingController courseUrlController = TextEditingController();
   TextEditingController channeNameController = TextEditingController();
-  Category category =  Category();
+  Category category = Category();
 
   @override
   void initState() {
-      Provider.of<CourseProvider>(context, listen: false).getCategories();
+    Provider.of<CourseProvider>(context, listen: false).getCategories();
     super.initState();
   }
 
@@ -205,8 +205,10 @@ class _AddACourseState extends State<AddACourse> {
                                 print(catSelected);
                               });
                             },
-                            items: Provider.of<CourseProvider>(context,listen: false).cd.
-                            map((location) {
+                            items: Provider.of<CourseProvider>(context,
+                                    listen: false)
+                                .cd
+                                .map((location) {
                               return DropdownMenuItem(
                                 child: new Text(location.categoryName),
                                 value: location.id,

@@ -64,7 +64,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
                   child: TextFormField(
                       controller: emailController,
-                      focusNode: FocusNode(),
+                      // focusNode: FocusNode(),
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         labelText: "Email",
@@ -108,7 +108,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
                   child: TextFormField(
                     controller: passwordController,
-                    focusNode: FocusNode(),
+                    // focusNode: FocusNode(),
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
@@ -137,7 +137,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
                   child: TextFormField(
                     controller: confirmPasswordController,
-                    focusNode: FocusNode(),
+                    // focusNode: FocusNode(),
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
@@ -166,7 +166,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
                   child: TextFormField(
                     controller: otpController,
-                    focusNode: FocusNode(),
+                    // focusNode: FocusNode(),
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: "OTP",
@@ -200,8 +200,11 @@ class _ResetPasswordState extends State<ResetPassword> {
                                       side: BorderSide(
                                           color: Colors.white, width: 2.0)))),
                       onPressed: () async {
-                        await auth.resetPassword(context, emailController.text,
-                            passwordController.text, otpController.text);
+                        await auth.resetPassword(
+                            context,
+                            emailController.text.trim().toLowerCase(),
+                            passwordController.text.trim(),
+                            otpController.text.trim());
                         FocusScope.of(context).unfocus();
                       },
                       child: Text("Confirm",

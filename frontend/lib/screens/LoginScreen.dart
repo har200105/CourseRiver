@@ -83,7 +83,7 @@ class _LoginState extends State<Login> {
                 padding:
                     const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
                 child: TextFormField(
-                    focusNode: FocusNode(),
+                    // focusNode: FocusNode(),
                     controller: emailEditingController,
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
@@ -110,7 +110,7 @@ class _LoginState extends State<Login> {
               Padding(
                 padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
                 child: TextFormField(
-                  focusNode: FocusNode(),
+                  // focusNode: FocusNode(),
                   controller: passwordController,
                   obscureText: isShow,
                   style: TextStyle(color: Colors.black),
@@ -158,7 +158,7 @@ class _LoginState extends State<Login> {
                       if (formkey.currentState.validate()) {
                         auth.LoginService(
                           context,
-                          emailEditingController.text.trim(),
+                          emailEditingController.text.trim().toLowerCase(),
                           passwordController.text.trim(),
                         );
                       } else {

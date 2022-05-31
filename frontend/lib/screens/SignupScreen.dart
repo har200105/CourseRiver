@@ -243,7 +243,7 @@ class _SignUpState extends State<SignUp> {
                         auth.Signup(
                             context,
                             userNameEditingController.text.trim(),
-                            emailEditingController.text.trim(),
+                            emailEditingController.text.trim().toLowerCase(),
                             passwordController.text.trim(),
                             utils.userimage);
                       }
