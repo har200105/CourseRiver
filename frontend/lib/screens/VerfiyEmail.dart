@@ -59,7 +59,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
                 padding:
                     const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
                 child: TextFormField(
-                    controller: emailController,
+                    initialValue: widget.email ?? "",
                     focusNode: FocusNode(),
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(

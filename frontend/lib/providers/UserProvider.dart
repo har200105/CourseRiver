@@ -27,7 +27,6 @@ class AuthenticationProvider extends ChangeNotifier {
       var userData =
           await authentication.signupUser(email, password, name, image);
       Map<String, dynamic> parsedData = await jsonDecode(userData);
-      print(".......");
       print(parsedData['success']);
       final success = parsedData['success'];
       final message = parsedData['message'];
@@ -79,7 +78,6 @@ class AuthenticationProvider extends ChangeNotifier {
         prefs.setBool("admin", admin);
         cache.writeCache(key: "pic", value: pic);
         cache.writeCache(key: "id", value: id);
-        print("///////........");
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(

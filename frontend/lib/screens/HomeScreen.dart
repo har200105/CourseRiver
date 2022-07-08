@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           fontSize: 15.0),
                                     ),
                                   ),
-                                  !isAdmin
+                                  isAdmin
                                       ? MaterialButton(
                                           onPressed: () {
                                             Navigator.pushReplacement(
