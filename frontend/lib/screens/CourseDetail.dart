@@ -55,12 +55,12 @@ class _CourseDetailsState extends State<CourseDetails> {
         isLoggedIn = true;
       }
     });
-    if (Provider.of<CourseProvider>(context, listen: false)
-        .courseData
-        .ratedBy
-        .contains(id)) {
-      setState(() {});
-    } else {}
+    // if (Provider.of<CourseProvider>(context, listen: false)
+    //     .courseData
+    //     .ratedBy
+    //     .contains(id)) {
+    //   setState(() {});
+    // } else {}
   }
 
   Future<void> rateAgain() async {
@@ -89,7 +89,6 @@ class _CourseDetailsState extends State<CourseDetails> {
 
   @override
   void initState() {
-    // String cr="";
     Provider.of<CourseProvider>(context, listen: false)
         .getCourseData(widget.id)
         .then((value) => {
@@ -110,253 +109,277 @@ class _CourseDetailsState extends State<CourseDetails> {
       if (course.courseData == null || course.courseData.courseName == null) {
         return Center(child: CircularProgressIndicator());
       }
-      return Scaffold(
-        key: _scaffoldKey,
-        resizeToAvoidBottomInset: true,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back_sharp),
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => BottomNavigationBarExample()));
-            },
+      return WillPopScope(
+        onWillPop: () {
+          Provider.of<CourseProvider>(context, listen: false).resetCourseData();
+          return Future.value(true);
+        },
+        child: Scaffold(
+          key: _scaffoldKey,
+          resizeToAvoidBottomInset: true,
+          appBar: AppBar(
+            backgroundColor: Colors.black,
+            leading: IconButton(
+              icon: Icon(Icons.arrow_back_sharp),
+              onPressed: () {
+                Provider.of<CourseProvider>(context, listen: false)
+                    .resetCourseData();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BottomNavigationBarExample()));
+              },
+            ),
+            title: Text(
+              course.courseData.courseName ?? "",
+              style: TextStyle(color: Colors.white),
+            ),
+            centerTitle: true,
           ),
-          title: Text(
-            course.courseData.courseName,
-            style: TextStyle(color: Colors.white),
-          ),
-          centerTitle: true,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-                child: CircleAvatar(
-                  radius: 80.0,
-                  backgroundImage: NetworkImage(course.courseData.coursePic),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: CircleAvatar(
+                    radius: 80.0,
+                    backgroundImage:
+                        NetworkImage(course.courseData.coursePic ?? ""),
+                  ),
                 ),
-              ),
-              !course.courseData.ratedBy.contains(idU) && isLoggedIn
-                  ? RatingBar(
-                      initialRating: 0,
-                      minRating: 0,
-                      maxRating: 5,
-                      glow: true,
-                      glowColor: Colors.blue,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      ratingWidget: RatingWidget(
-                          empty: Icon(
-                            Icons.star,
-                            color: Colors.black,
-                          ),
-                          full: Icon(
-                            Icons.star,
-                            color: Colors.deepOrange,
-                          ),
-                          half: Icon(
-                            Icons.star,
-                            color: Colors.deepOrange[200],
-                            size: 10.0,
-                          )),
-                      updateOnDrag: true,
-                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                      onRatingUpdate: (rating) {
-                        setState(() {
-                          isShow = true;
-                          newRating = rating;
-                        });
-                        print(rating);
-                      },
-                    )
-                  : isLoggedIn
-                      ? Column(children: [
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Text("You have Already rated this course"),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: MaterialButton(
-                              onPressed: () async {
-                                await rateAgain();
-                              },
-                              child: Text(
-                                "Rate Again",
-                                style: TextStyle(color: Colors.white),
-                              ),
+                isLoggedIn &&
+                        course.courseData.ratedBy != null &&
+                        !course.courseData.ratedBy.contains(idU)
+                    ? RatingBar(
+                        initialRating: 0,
+                        minRating: 0,
+                        maxRating: 5,
+                        glow: true,
+                        glowColor: Colors.blue,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        ratingWidget: RatingWidget(
+                            empty: Icon(
+                              Icons.star,
                               color: Colors.black,
                             ),
-                          )
-                        ])
-                      : Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text('Please Log in to Rate The Course'),
-                        ),
-              isShow
-                  ? MaterialButton(
-                      onPressed: () async {
-                        Provider.of<CourseProvider>(context, listen: false)
-                            .rateCourse(widget.id,
-                                ((currentRatings + newRating) / 2).toString())
-                            .whenComplete(() {
+                            full: Icon(
+                              Icons.star,
+                              color: Colors.deepOrange,
+                            ),
+                            half: Icon(
+                              Icons.star,
+                              color: Colors.deepOrange[200],
+                              size: 10.0,
+                            )),
+                        updateOnDrag: true,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        onRatingUpdate: (rating) {
                           setState(() {
-                            currentRatings = ((currentRatings + newRating) / 2);
-                            // isAlreadyRated = true;
-                            Provider.of<CourseProvider>(context, listen: false)
-                                .getCourseData(widget.id);
-                            isShow = false;
+                            isShow = true;
+                            newRating = rating;
                           });
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return AlertDialog(
-                                  title: Text("Course Rated Successfully"),
-                                  content: MaterialButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text("Ok"),
-                                  ),
-                                );
-                              });
-                        });
-                      },
-                      child: Text(
-                        "Rate",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      color: Colors.black,
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Center(
-                        child: Text(!course.courseData.ratedBy.contains(idU)
-                            ? "Rate This Course !!"
-                            : "You can Rate Again"),
-                      ),
-                    ),
-              Container(
-                  width: 380.0,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20.0),
-                      color: Colors.black),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
+                          print(rating);
+                        },
+                      )
+                    : isLoggedIn
+                        ? Column(children: [
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Text("You have Already rated this course"),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: MaterialButton(
+                                onPressed: () async {
+                                  await rateAgain();
+                                },
+                                child: Text(
+                                  "Rate Again",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                color: Colors.black,
+                              ),
+                            )
+                          ])
+                        : Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: Text('Please Log in to Rate The Course'),
+                          ),
+                isShow
+                    ? MaterialButton(
+                        onPressed: () async {
+                          Provider.of<CourseProvider>(context, listen: false)
+                              .rateCourse(widget.id,
+                                  ((currentRatings + newRating) / 2).toString())
+                              .whenComplete(() {
+                            setState(() {
+                              currentRatings =
+                                  ((currentRatings + newRating) / 2);
+                              // isAlreadyRated = true;
+                              Provider.of<CourseProvider>(context,
+                                      listen: false)
+                                  .getCourseData(widget.id);
+                              isShow = false;
+                            });
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: Text("Course Rated Successfully"),
+                                    content: MaterialButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("Ok"),
+                                    ),
+                                  );
+                                });
+                          });
+                        },
                         child: Text(
-                          "Course Name :" + course.courseData.courseName,
+                          "Rate",
                           style: TextStyle(color: Colors.white),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                            "Course Description :" +
-                                course.courseData.courseDescription,
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                            "Channel Name :" + course.courseData.channelName,
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          launch(course.courseData.courseUrl);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 18.0, top: 10.0, bottom: 10.0),
+                        color: Colors.black,
+                      )
+                    : course.courseData.ratedBy != null
+                        ? Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Center(
+                              child: Text(
+                                  !course.courseData.ratedBy.contains(idU)
+                                      ? "Rate This Course !!"
+                                      : "You can Rate Again"),
+                            ),
+                          )
+                        : SizedBox(
+                            width: 0,
+                            height: 0,
+                          ),
+                Container(
+                    width: 380.0,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        color: Colors.black),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
                           child: Text(
-                              "Course URL :" + course.courseData.courseUrl,
+                            "Course Name :" + course.courseData.courseName ??
+                                "",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                              "Course Description :" +
+                                      course.courseData.courseDescription ??
+                                  "",
                               style: TextStyle(color: Colors.white)),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                            "Ratings :" +
-                                currentRatings.toStringAsFixed(2) +
-                                "⭐" +
-                                " (" +
-                                (course.courseData.ratedBy.length + 1)
-                                    .toString() +
-                                " Reviews" +
-                                ")",
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ],
-                  )),
-              name != null
-                  ? Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        "Comment",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    )
-                  : Text(""),
-              name != null
-                  ? Container(
-                      width: 350.0,
-                      child: TextFormField(
-                        controller: commentController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Comment Your Views on this Course',
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                              "Channel Name :" +
+                                      course.courseData.channelName ??
+                                  "",
+                              style: TextStyle(color: Colors.white)),
                         ),
-                      ),
-                    )
-                  : Text(""),
-              idU != null
-                  ? MaterialButton(
-                      onPressed: () async {
-                        commentController.text.isNotEmpty
-                            ? courseProvider(false)
-                                .commentCourse(
-                                    commentController.text, widget.id)
-                                .whenComplete(() {
-                                commentController.clear();
-                                Provider.of<CourseProvider>(context,
-                                        listen: false)
-                                    .getCourseData(widget.id);
-                              })
-                            : null;
+                        GestureDetector(
+                          onTap: () {
+                            launch(course.courseData.courseUrl ?? "");
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 18.0, top: 10.0, bottom: 10.0),
+                            child: Text(
+                                "Course URL :" + course.courseData.courseUrl ??
+                                    "",
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Text(
+                              "Ratings :" +
+                                  currentRatings.toStringAsFixed(2) +
+                                  "⭐" +
+                                  " (" +
+                                  (course.courseData.ratedBy.length + 1)
+                                      .toString() +
+                                  " Reviews" +
+                                  ")",
+                              style: TextStyle(color: Colors.white)),
+                        ),
+                      ],
+                    )),
+                name != null
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "Comment",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      )
+                    : Text(""),
+                name != null
+                    ? Container(
+                        width: 350.0,
+                        child: TextFormField(
+                          controller: commentController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'Comment Your Views on this Course',
+                          ),
+                        ),
+                      )
+                    : Text(""),
+                idU != null
+                    ? MaterialButton(
+                        onPressed: () async {
+                          commentController.text.isNotEmpty
+                              ? courseProvider(false)
+                                  .commentCourse(
+                                      commentController.text, widget.id)
+                                  .whenComplete(() {
+                                  commentController.clear();
+                                  Provider.of<CourseProvider>(context,
+                                          listen: false)
+                                      .getCourseData(widget.id);
+                                })
+                              : null;
 
-                        print(commentController.text);
-                      },
-                      child: Text(
-                        "Comment",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      color: Colors.black,
-                    )
-                  : Text(""),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "Comments",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold),
+                          print(commentController.text);
+                        },
+                        child: Text(
+                          "Comment",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        color: Colors.black,
+                      )
+                    : Text(""),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Comments",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
-              ),
-              course.courseData.comments.length == 0
-                  ? Text("No Comments Available")
-                  : commentWidget(course)
-            ],
+                course.courseData.comments.length == 0
+                    ? Text("No Comments Available")
+                    : commentWidget(course)
+              ],
+            ),
           ),
         ),
       );
@@ -375,7 +398,7 @@ class _CourseDetailsState extends State<CourseDetails> {
               elevation: 4.0,
               child: ListTile(
                 title: Text(
-                  snapshot.courseData.comments[i].commentedBy,
+                  snapshot.courseData.comments[i].commentedBy ?? "",
                   style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -384,7 +407,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                 subtitle: Padding(
                   padding: EdgeInsets.only(top: 10.0, left: 10.0),
                   child: Text(
-                    snapshot.courseData.comments[i].commentedText,
+                    snapshot.courseData.comments[i].commentedText ?? "",
                     style: TextStyle(color: Colors.black, fontSize: 20.0),
                   ),
                 ),

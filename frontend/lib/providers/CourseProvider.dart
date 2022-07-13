@@ -198,4 +198,9 @@ class CourseProvider extends ChangeNotifier {
       print(e.toString());
     }
   }
+
+  void resetCourseData() {
+    courseData = null;
+    notifyListeners();
+  }
 }

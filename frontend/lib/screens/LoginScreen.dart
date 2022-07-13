@@ -83,7 +83,6 @@ class _LoginState extends State<Login> {
                 padding:
                     const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
                 child: TextFormField(
-                    // focusNode: FocusNode(),
                     controller: emailEditingController,
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
