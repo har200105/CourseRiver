@@ -1,8 +1,8 @@
 import 'package:courseriver/providers/UserProvider.dart';
 import 'package:courseriver/screens/LoginScreen.dart';
 import 'package:courseriver/screens/SignupScreen.dart';
-import 'package:courseriver/widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
+import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
 class VerifyEmail extends StatefulWidget {
@@ -79,29 +79,47 @@ class _VerifyEmailState extends State<VerifyEmail> {
                     // ignore:missing_return
                     validator: (a) {}),
               ),
+              // Padding(
+              //   padding:
+              //       const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
+              //   child: TextFormField(
+              //       controller: otpController,
+              //       focusNode: FocusNode(),
+              //       style: TextStyle(color: Colors.black),
+              //       decoration: InputDecoration(
+              //         labelText: "OTP",
+              //         focusedBorder: OutlineInputBorder(
+              //           borderSide:
+              //               const BorderSide(color: Colors.black, width: 2.0),
+              //           borderRadius: BorderRadius.circular(25.0),
+              //         ),
+              //         enabledBorder: OutlineInputBorder(
+              //           borderSide:
+              //               const BorderSide(color: Colors.black, width: 2.0),
+              //           borderRadius: BorderRadius.circular(25.0),
+              //         ),
+              //         hintStyle: TextStyle(fontSize: 18.0, color: Colors.black),
+              //       ),
+              //       // ignore:missing_return
+              //       validator: (a) {}),
+              // ),
               Padding(
-                padding:
-                    const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
-                child: TextFormField(
-                    controller: otpController,
-                    focusNode: FocusNode(),
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      labelText: "OTP",
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 2.0),
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 2.0),
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      hintStyle: TextStyle(fontSize: 18.0, color: Colors.black),
-                    ),
-                    // ignore:missing_return
-                    validator: (a) {}),
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Enter The OTP",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: Pinput(
+                  length: 6,
+                  controller: otpController,
+                  showCursor: true,
+                  onCompleted: (pin) {
+                    print(otpController.text);
+                  },
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
@@ -116,8 +134,8 @@ class _VerifyEmailState extends State<VerifyEmail> {
                                     side: BorderSide(
                                         color: Colors.white, width: 2.0)))),
                     onPressed: () async {
-                      auth.verifyEmail(
-                          context, widget.email, otpController.text);
+                      auth.verifyEmail(context, widget.email.trim(),
+                          otpController.text.trim());
                       FocusScope.of(context).unfocus();
                     },
                     child:

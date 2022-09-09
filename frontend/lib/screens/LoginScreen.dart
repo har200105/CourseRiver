@@ -12,7 +12,7 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> {
+class _LoginState extends State<Login> with TickerProviderStateMixin {
   TextEditingController emailEditingController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final Cache cache = Cache();
@@ -23,9 +23,36 @@ class _LoginState extends State<Login> {
   String password = "";
   String error = "";
   bool loading = false;
+  AnimationController _controller1;
+  Animation<Offset> animation1;
+  AnimationController _controller2;
+  Animation<Offset> animation2;
 
   @override
   void initState() {
+    _controller1 = AnimationController(
+      duration: Duration(milliseconds: 500),
+      vsync: this,
+    );
+    animation1 = Tween<Offset>(
+      begin: Offset(0.0, 4.0),
+      end: Offset(0.0, 0.0),
+    ).animate(
+      CurvedAnimation(parent: _controller1, curve: Curves.easeInOut),
+    );
+    _controller2 = AnimationController(
+      duration: Duration(milliseconds: 2500),
+      vsync: this,
+    );
+    animation2 = Tween<Offset>(
+      begin: Offset(0.0, 8.0),
+      end: Offset(0.0, 0.0),
+    ).animate(
+      CurvedAnimation(parent: _controller2, curve: Curves.elasticInOut),
+    );
+
+    _controller1.forward();
+    _controller2.forward();
     super.initState();
   }
 
@@ -54,39 +81,83 @@ class _LoginState extends State<Login> {
         centerTitle: true,
       ),
       resizeToAvoidBottomInset: false,
-      body: Container(
-        height: 900.0,
-        width: 900.0,
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
-        child: Column(children: [
-          Padding(
-            padding: EdgeInsets.only(top: 50.0),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-                  onPressed: () {
-                    Navigator.pushReplacement(context,
-                        (MaterialPageRoute(builder: (context) => SignUp())));
-                  },
-                ),
-              ],
-            ),
+      body: SlideTransition(
+        position: animation1,
+        child: Container(
+          height: 900.0,
+          width: 900.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
           ),
-          Form(
-            key: formkey,
-            child: Column(children: [
-              Text("Login", style: TextStyle(fontSize: 25)),
-              Padding(
-                padding:
-                    const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
-                child: TextFormField(
-                    controller: emailEditingController,
+          child: Column(children: [
+            Padding(
+              padding: EdgeInsets.only(top: 50.0),
+              child: Row(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+                    onPressed: () {
+                      Navigator.pushReplacement(context,
+                          (MaterialPageRoute(builder: (context) => SignUp())));
+                    },
+                  ),
+                ],
+              ),
+            ),
+            Form(
+              key: formkey,
+              child: Column(children: [
+                Text("Login", style: TextStyle(fontSize: 25)),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
+                  child: TextFormField(
+                      controller: emailEditingController,
+                      style: TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                        labelText: "Enter your Email",
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 2.0),
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.black, width: 2.0),
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        hintStyle:
+                            TextStyle(fontSize: 18.0, color: Colors.black),
+                      ),
+                      //ignore:missing_return
+                      validator: (a) {
+                        if (!validateEmail(
+                            emailEditingController.text.trim())) {
+                          return "Invalid Email";
+                        }
+                      }),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
+                  child: TextFormField(
+                    // focusNode: FocusNode(),
+                    controller: passwordController,
+                    obscureText: isShow,
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
-                      labelText: "Enter your Email",
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.remove_red_eye),
+                        onPressed: () {
+                          setState(() {
+                            isShow = !isShow;
+                          });
+                        },
+                      ),
+                      labelText: "Enter your password",
+                      hintStyle: TextStyle(
+                          fontSize: 18.0,
+                          fontFamily: 'Comic',
+                          color: Colors.black),
                       focusedBorder: OutlineInputBorder(
                         borderSide:
                             const BorderSide(color: Colors.black, width: 2.0),
@@ -97,101 +168,87 @@ class _LoginState extends State<Login> {
                             const BorderSide(color: Colors.black, width: 2.0),
                         borderRadius: BorderRadius.circular(25.0),
                       ),
-                      hintStyle: TextStyle(fontSize: 18.0, color: Colors.black),
-                    ),
-                    //ignore:missing_return
-                    validator: (a) {
-                      if (!validateEmail(emailEditingController.text.trim())) {
-                        return "Invalid Email";
-                      }
-                    }),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
-                child: TextFormField(
-                  // focusNode: FocusNode(),
-                  controller: passwordController,
-                  obscureText: isShow,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    suffixIcon: IconButton(
-                      icon: Icon(Icons.remove_red_eye),
-                      onPressed: () {
-                        setState(() {
-                          isShow = !isShow;
-                        });
-                      },
-                    ),
-                    labelText: "Enter your password",
-                    hintStyle: TextStyle(
-                        fontSize: 18.0,
-                        fontFamily: 'Comic',
-                        color: Colors.black),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 2.0),
-                      borderRadius: BorderRadius.circular(25.0),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.black, width: 2.0),
-                      borderRadius: BorderRadius.circular(25.0),
                     ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: ElevatedButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5.0),
-                                    side: BorderSide(
-                                        color: Colors.white, width: 2.0)))),
-                    onPressed: () async {
-                      FocusScope.of(context).unfocus();
-                      if (formkey.currentState.validate()) {
-                        auth.LoginService(
-                          context,
-                          emailEditingController.text.trim().toLowerCase(),
-                          passwordController.text.trim(),
-                        );
-                      } else {
-                        print("Not Validated");
-                      }
-                    },
-                    child:
-                        Text("Login", style: TextStyle(color: Colors.white))),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: TextButton(
-                    onPressed: () async {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ResetPassword()));
-                    },
-                    child: Text("Forget Password ?",
-                        style: TextStyle(color: Colors.black))),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: TextButton(
-                    onPressed: () async {
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => SignUp()));
-                    },
-                    child: Text("New User ?",
-                        style: TextStyle(color: Colors.black))),
-              ),
-            ]),
-          ),
-        ]),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 10.0),
+                //   child: ElevatedButton(
+                //       style: ButtonStyle(
+                //           backgroundColor:
+                //               MaterialStateProperty.all(Colors.black),
+                //           shape:
+                //               MaterialStateProperty.all<RoundedRectangleBorder>(
+                //                   RoundedRectangleBorder(
+                //                       borderRadius: BorderRadius.circular(5.0),
+                //                       side: BorderSide(
+                //                           color: Colors.white, width: 2.0)))),
+                //       onPressed: () async {
+                //         FocusScope.of(context).unfocus();
+                //         if (formkey.currentState.validate()) {
+                //           auth.LoginService(
+                //             context,
+                //             emailEditingController.text.trim().toLowerCase(),
+                //             passwordController.text.trim(),
+                //           );
+                //         } else {
+                //           print("Not Validated");
+                //         }
+                //       },
+                //       child:
+                //           Text("Login", style: TextStyle(color: Colors.white))),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: SizedBox(
+                    width: 250,
+                    height: 45,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.teal.shade600,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          if (formkey.currentState.validate()) {
+                            auth.LoginService(
+                              context,
+                              emailEditingController.text.trim().toLowerCase(),
+                              passwordController.text.trim(),
+                            );
+                          } else {
+                            print("Not Validated");
+                          }
+                        },
+                        child: Text("Login")),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: TextButton(
+                      onPressed: () async {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResetPassword()));
+                      },
+                      child: Text("Forget Password ?",
+                          style: TextStyle(color: Colors.black))),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: TextButton(
+                      onPressed: () async {
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => SignUp()));
+                      },
+                      child: Text("New User ?",
+                          style: TextStyle(color: Colors.black))),
+                ),
+              ]),
+            ),
+          ]),
+        ),
       ),
     );
   }

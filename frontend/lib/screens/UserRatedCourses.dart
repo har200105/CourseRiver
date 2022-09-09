@@ -37,7 +37,7 @@ class _UserRatedState extends State<UserRated> {
           return Scaffold(
               appBar: AppBar(
                 backgroundColor: Colors.black,
-                title: Text("Courses Rated By You Recently"),
+                title: Text("Courses Rated By You"),
                 centerTitle: true,
                 leading: IconButton(
                     icon: Icon(Icons.arrow_back),
@@ -55,9 +55,11 @@ class _UserRatedState extends State<UserRated> {
                   children: [
                     Consumer<CourseProvider>(
                       builder: (context, course, snapshot) {
-                      if(course.userRatedCourse.length == 0){
-                        return Center(child: Text("You Have Not Rated Any Courses Yet"));
-                      }  
+                        if (course.userRatedCourse.length == 0) {
+                          return Center(
+                              child:
+                                  Text("You Have Not Rated Any Courses Yet"));
+                        }
                         return Expanded(
                           child: ListView.builder(
                             itemCount: course.userRatedCourse.length,

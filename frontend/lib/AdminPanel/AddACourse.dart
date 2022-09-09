@@ -152,24 +152,25 @@ class _AddACourseState extends State<AddACourse> {
                             ),
                           ),
                         ),
-                        ElevatedButton(
-                          onPressed: utils.uploadImage,
-                          style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.black),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      side: BorderSide(
-                                          color: Colors.white, width: 4.0)))),
-                          child: Text(
-                            utils.userimage.isEmpty
-                                ? "Upload Course Image"
-                                : "Reselect Image",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                        // ElevatedButton(
+                        //   onPressed: utils.uploadImage,
+                        //   style: ButtonStyle(
+                        //       backgroundColor:
+                        //           MaterialStateProperty.all(Colors.black),
+                        //       shape: MaterialStateProperty.all<
+                        //               RoundedRectangleBorder>(
+                        //           RoundedRectangleBorder(
+                        //               borderRadius: BorderRadius.circular(12.0),
+                        //               side: BorderSide(
+                        //                   color: Colors.white, width: 4.0)))),
+                        //   child: Text(
+                        //     utils.userimage.isEmpty
+                        //         ? "Upload Course Image"
+                        //         : "Reselect Image",
+                        //     style: TextStyle(color: Colors.white),
+                        //   ),
+                        // ),
+
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
@@ -221,39 +222,75 @@ class _AddACourseState extends State<AddACourse> {
                   ),
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  Provider.of<AdminProvider>(context, listen: false)
-                      .addCourse(
-                          courseNameController.text,
-                          courseDescriptionController.text,
-                          utils.userimage,
-                          channeNameController.text,
-                          courseUrlController.text,
-                          catSelected)
-                      .whenComplete(() => {
-                            courseNameController.clear(),
-                            courseUrlController.clear(),
-                            channeNameController.clear(),
-                            courseDescriptionController.clear(),
-                            catSelected = "",
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        BottomNavigationBarExample()))
-                          });
-                },
-                style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: Colors.teal, width: 2.0)))),
-                child: Text(
-                  "Add Course",
-                  style: TextStyle(color: Colors.white),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: SizedBox(
+                  width: 250,
+                  height: 45,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.indigoAccent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10))),
+                      onPressed: utils.uploadImage,
+                      child: Text(
+                          utils.userimage.isEmpty
+                              ? "Upload Course Image"
+                              : "Reselect Image",
+                          style: TextStyle(color: Colors.white))),
                 ),
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: SizedBox(
+                  width: 250,
+                  height: 45,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.amberAccent,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    onPressed: () {
+                      Provider.of<AdminProvider>(context, listen: false)
+                          .addCourse(
+                              courseNameController.text,
+                              courseDescriptionController.text,
+                              utils.userimage,
+                              channeNameController.text,
+                              courseUrlController.text,
+                              catSelected)
+                          .whenComplete(() => {
+                                courseNameController.clear(),
+                                courseUrlController.clear(),
+                                channeNameController.clear(),
+                                courseDescriptionController.clear(),
+                                catSelected = "",
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            BottomNavigationBarExample()))
+                              });
+                    },
+                    child: Text(
+                      "Add Course",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+              // ElevatedButton(
+              //   onPressed: () {},
+              //   style: ButtonStyle(
+              //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              //           RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(18.0),
+              //               side: BorderSide(color: Colors.teal, width: 2.0)))),
+              //   child: Text(
+              //     "Add Course",
+              //     style: TextStyle(color: Colors.white),
+              //   ),
+              // )
             ],
           ),
         ),

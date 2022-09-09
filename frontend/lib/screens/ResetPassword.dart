@@ -2,6 +2,7 @@ import 'package:courseriver/providers/UserProvider.dart';
 import 'package:courseriver/screens/SignupScreen.dart';
 import 'package:courseriver/widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
+import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -37,12 +38,9 @@ class _ResetPasswordState extends State<ResetPassword> {
         reverse: true,
         physics: NeverScrollableScrollPhysics(),
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-          ),
-          child: Column(children: [
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             Padding(
-              padding: EdgeInsets.only(top: 50.0),
+              padding: EdgeInsets.only(top: 30.0),
               child: Row(
                 children: [
                   IconButton(
@@ -84,25 +82,43 @@ class _ResetPasswordState extends State<ResetPassword> {
                       // ignore:missing_return
                       validator: (a) {}),
                 ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 10.0),
+                //   child: ElevatedButton(
+                //       style: ButtonStyle(
+                //           backgroundColor:
+                //               MaterialStateProperty.all(Colors.black),
+                //           shape:
+                //               MaterialStateProperty.all<RoundedRectangleBorder>(
+                //                   RoundedRectangleBorder(
+                //                       borderRadius: BorderRadius.circular(5.0),
+                //                       side: BorderSide(
+                //                           color: Colors.white, width: 2.0)))),
+                //       onPressed: () async {
+                //         await auth.sendForgotPasswordOTP(
+                //             context, emailController.text);
+                //         FocusScope.of(context).unfocus();
+                //       },
+                //       child: Text("Send OTP",
+                //           style: TextStyle(color: Colors.white))),
+                // ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      side: BorderSide(
-                                          color: Colors.white, width: 2.0)))),
-                      onPressed: () async {
-                        await auth.sendForgotPasswordOTP(
-                            context, emailController.text);
-                        FocusScope.of(context).unfocus();
-                      },
-                      child: Text("Send OTP",
-                          style: TextStyle(color: Colors.white))),
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: SizedBox(
+                    width: 250,
+                    height: 45,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.purple.shade400,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onPressed: () async {
+                          await auth.sendForgotPasswordOTP(context,
+                              emailController.text.trim().toLowerCase());
+                          FocusScope.of(context).unfocus();
+                        },
+                        child: Text("Send OTP")),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
@@ -162,53 +178,93 @@ class _ResetPasswordState extends State<ResetPassword> {
                     ),
                   ),
                 ),
+                // Padding(
+                //   padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
+                //   child: TextFormField(
+                //     controller: otpController,
+                //     // focusNode: FocusNode(),
+                //     style: TextStyle(color: Colors.black),
+                //     decoration: InputDecoration(
+                //       labelText: "OTP",
+                //       hintStyle: TextStyle(
+                //           fontSize: 18.0,
+                //           fontFamily: 'Comic',
+                //           color: Colors.black),
+                //       focusedBorder: OutlineInputBorder(
+                //         borderSide:
+                //             const BorderSide(color: Colors.black, width: 2.0),
+                //         borderRadius: BorderRadius.circular(25.0),
+                //       ),
+                //       enabledBorder: OutlineInputBorder(
+                //         borderSide:
+                //             const BorderSide(color: Colors.black, width: 2.0),
+                //         borderRadius: BorderRadius.circular(25.0),
+                //       ),
+                //     ),
+                //   ),
+                // ),
                 Padding(
-                  padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
-                  child: TextFormField(
-                    controller: otpController,
-                    // focusNode: FocusNode(),
-                    style: TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      labelText: "OTP",
-                      hintStyle: TextStyle(
-                          fontSize: 18.0,
-                          fontFamily: 'Comic',
-                          color: Colors.black),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 2.0),
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 2.0),
-                        borderRadius: BorderRadius.circular(25.0),
-                      ),
-                    ),
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Enter The OTP",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10.0),
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.black),
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                      side: BorderSide(
-                                          color: Colors.white, width: 2.0)))),
-                      onPressed: () async {
-                        await auth.resetPassword(
-                            context,
-                            emailController.text.trim().toLowerCase(),
-                            passwordController.text.trim(),
-                            otpController.text.trim());
-                        FocusScope.of(context).unfocus();
-                      },
-                      child: Text("Confirm",
-                          style: TextStyle(color: Colors.white))),
+                  child: Pinput(
+                    length: 6,
+                    controller: otpController,
+                    showCursor: true,
+                    onCompleted: (pin) {
+                      print("fdf");
+                      print(otpController.text);
+                    },
+                  ),
+                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(top: 10.0),
+                //   child: ElevatedButton(
+                //       style: ButtonStyle(
+                //           backgroundColor:
+                //               MaterialStateProperty.all(Colors.black),
+                //           shape:
+                //               MaterialStateProperty.all<RoundedRectangleBorder>(
+                //                   RoundedRectangleBorder(
+                //                       borderRadius: BorderRadius.circular(5.0),
+                //                       side: BorderSide(
+                //                           color: Colors.white, width: 2.0)))),
+                //       onPressed: () async {
+                //         await auth.resetPassword(
+                //             context,
+                //             emailController.text.trim().toLowerCase(),
+                //             passwordController.text.trim(),
+                //             otpController.text.trim());
+                //         FocusScope.of(context).unfocus();
+                //       },
+                //       child: Text("Confirm",
+                //           style: TextStyle(color: Colors.white))),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: SizedBox(
+                    width: 250,
+                    height: 45,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.amber.shade600,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onPressed: () async {
+                          await auth.resetPassword(
+                              context,
+                              emailController.text.trim().toLowerCase(),
+                              passwordController.text.trim(),
+                              otpController.text.trim());
+                          FocusScope.of(context).unfocus();
+                        },
+                        child: Text("Confirm")),
+                  ),
                 ),
               ]),
             ),

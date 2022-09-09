@@ -75,7 +75,6 @@ class _AcceptCourseState extends State<AcceptCourse> {
                                   title: Row(children: [
                                     Text(
                                       courseData.courseName,
-                                      // overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 10.0),
                                     ),

@@ -56,6 +56,7 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       var userData = await authentication.loginUser(email, password);
       Map<String, dynamic> parsedData = await jsonDecode(userData);
+      print("object");
       print(parsedData);
 
       final verified = parsedData['verified'];
@@ -90,7 +91,7 @@ class AuthenticationProvider extends ChangeNotifier {
             MaterialPageRoute(builder: (context) => VerifyEmail(email: email)));
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(message)));
-      } else if (!success && !verified) {
+      } else {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Login()));
         ScaffoldMessenger.of(context).showSnackBar(

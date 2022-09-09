@@ -258,65 +258,68 @@ class _CourseDetailsState extends State<CourseDetails> {
                             width: 0,
                             height: 0,
                           ),
-                Container(
-                    width: 380.0,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        color: Colors.black),
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            "Course Name :" + course.courseData.courseName ??
-                                "",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                              "Course Description :" +
-                                      course.courseData.courseDescription ??
-                                  "",
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                              "Channel Name :" +
-                                      course.courseData.channelName ??
-                                  "",
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            launch(course.courseData.courseUrl ?? "");
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 18.0, top: 10.0, bottom: 10.0),
+                Center(
+                  child: Container(
+                      width: 380.0,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.black),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
                             child: Text(
-                                "Course URL :" + course.courseData.courseUrl ??
+                              "Course Name :" + course.courseData.courseName ??
+                                  "",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                                "Course Description :" +
+                                        course.courseData.courseDescription ??
                                     "",
                                 style: TextStyle(color: Colors.white)),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                              "Ratings :" +
-                                  currentRatings.toStringAsFixed(2) +
-                                  "⭐" +
-                                  " (" +
-                                  (course.courseData.ratedBy.length + 1)
-                                      .toString() +
-                                  " Reviews" +
-                                  ")",
-                              style: TextStyle(color: Colors.white)),
-                        ),
-                      ],
-                    )),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                                "Channel Name :" +
+                                        course.courseData.channelName ??
+                                    "",
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              launch(course.courseData.courseUrl ?? "");
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 18.0, top: 10.0, bottom: 10.0),
+                              child: Text(
+                                  "Course URL :" +
+                                          course.courseData.courseUrl ??
+                                      "",
+                                  style: TextStyle(color: Colors.white)),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Text(
+                                "Ratings :" +
+                                    currentRatings.toStringAsFixed(2) +
+                                    "⭐" +
+                                    " (" +
+                                    (course.courseData.ratedBy.length + 1)
+                                        .toString() +
+                                    " Reviews" +
+                                    ")",
+                                style: TextStyle(color: Colors.white)),
+                          ),
+                        ],
+                      )),
+                ),
                 name != null
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -354,9 +357,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                                           listen: false)
                                       .getCourseData(widget.id);
                                 })
-                              : null;
-
-                          print(commentController.text);
+                              : print(commentController.text);
                         },
                         child: Text(
                           "Comment",

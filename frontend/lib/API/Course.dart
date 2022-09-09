@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CourseAPI {
-  
   final client = http.Client();
   final Cache cache = Cache();
 
@@ -131,9 +130,8 @@ class CourseAPI {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     final String url = "${API().api}/rejectCourse/${id}";
     final Uri uri = Uri.parse(url);
-    final http.Response response = await client.put(uri, headers: {
-      "Authorization": preferences.getString("jwt")
-    });
+    final http.Response response = await client
+        .put(uri, headers: {"Authorization": preferences.getString("jwt")});
     if (response.statusCode == 201) {
       return response.body;
     }
@@ -200,9 +198,8 @@ class CourseAPI {
       print("cwef");
       final String url = "${API().api}/removeRating/${id}";
       final Uri uri = Uri.parse(url);
-      final http.Response response = await client.put(uri, headers: {
-        "Authorization": cache.readCache("jwt")
-      });
+      final http.Response response = await client
+          .put(uri, headers: {"Authorization": cache.readCache("jwt")});
       print(response.body);
       if (response.statusCode == 201) {
         print(response.body);
@@ -271,8 +268,7 @@ class CourseAPI {
       String coursePic,
       String channelName,
       String courseUrl,
-      String category
-      ) async {
+      String category) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       final String url = "${API().api}/addReqCourse";
@@ -330,27 +326,18 @@ class CourseAPI {
     if (comment.statusCode == 201) {
       return comment.body;
     }
-}
+  }
 
-Future getUserCourse()async{
+  Future getUserCourse() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String url = "${API().api}/getUserCourse";
+    var response = await http.get(Uri.parse(url),
+        headers: {"Authorization": prefs.getString("jwt")});
 
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  final String url = "${API().api}/getUserCourse";
-   var response = await http.get(Uri.parse(url),headers: {
-     "Authorization":prefs.getString("jwt")
-   });
-
-   if(response.statusCode==201){
-     print("Ranjhaa");
-    //  print(response.body);
-     return response.body;
-   }
-
-
-
-
-
-}
-
-
+    if (response.statusCode == 201) {
+      print("Ranjhaa");
+      //  print(response.body);
+      return response.body;
+    }
+  }
 }

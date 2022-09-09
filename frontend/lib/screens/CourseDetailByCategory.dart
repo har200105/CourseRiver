@@ -88,21 +88,19 @@ class _CourseDetailsCategoryState extends State<CourseDetailsCategory> {
                                         builder: (context) =>
                                             CourseDetails(id: courseData.id)));
                               },
-                              child: Expanded(
-                                child: ListTile(
-                                  leading: CircleAvatar(
-                                    radius: 40.0,
-                                    backgroundImage:
-                                        NetworkImage(courseData.coursePic),
-                                  ),
-                                  title: Text(
-                                    courseData.courseName,
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                  subtitle: Text(
-                                    courseData.channelName,
-                                    style: TextStyle(color: Colors.black),
-                                  ),
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  radius: 40.0,
+                                  backgroundImage:
+                                      NetworkImage(courseData.coursePic),
+                                ),
+                                title: Text(
+                                  courseData.courseName,
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                subtitle: Text(
+                                  courseData.channelName,
+                                  style: TextStyle(color: Colors.black),
                                 ),
                               ),
                             ),

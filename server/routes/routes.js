@@ -82,7 +82,7 @@ router.post("/login", async(req, res) => {
             });
         }
             if (exist !==null && !exist?.verifed) {
-             return res.json({verified:false,success:true,message:"Please Verify your email"});
+             return res.json({verified:false,success:false,message:"Please Verify your email"});
             }
         else {
             res.json({message:"User Doesnt Exist",success:false,verified:false});

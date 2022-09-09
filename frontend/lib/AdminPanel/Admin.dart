@@ -22,9 +22,14 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      leading: IconButton(onPressed: (){
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>BottomNavigationBarExample()));
-      }, icon: Icon(Icons.arrow_back)),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BottomNavigationBarExample()));
+            },
+            icon: Icon(Icons.arrow_back)),
         backgroundColor: Colors.black,
         title: Text("Admin Panel", style: TextStyle(color: Colors.white)),
         bottom: TabBar(
@@ -45,7 +50,7 @@ class _AdminState extends State<Admin> with SingleTickerProviderStateMixin {
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [CurrentCourses(), AcceptCourse(),AddACourse() ],
+        children: [CurrentCourses(), AcceptCourse(), AddACourse()],
       ),
     );
   }
