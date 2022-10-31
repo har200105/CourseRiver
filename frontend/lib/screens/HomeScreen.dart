@@ -3,7 +3,6 @@ import 'package:courseriver/Services/Cache.dart';
 import 'package:courseriver/models/Category.dart';
 import 'package:courseriver/models/Course.dart';
 import 'package:courseriver/providers/CourseProvider.dart';
-import 'package:courseriver/providers/UserProvider.dart';
 import 'package:courseriver/screens/LoginScreen.dart';
 import 'package:courseriver/screens/ProfileScreen.dart';
 import 'package:courseriver/screens/RequestACourse.dart';

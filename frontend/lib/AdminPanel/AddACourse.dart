@@ -79,146 +79,144 @@ class _AddACourseState extends State<AddACourse> {
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Form(
                   key: _formKey,
-                  child: Expanded(
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: courseNameController,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              labelText: "Enter The Course Name",
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                              // enabledBorder: OutlineInputBorder(
-                              //   borderSide: BorderSide(color: Colors.red, width: 5.0),
-                              // ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: courseNameController,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: "Enter The Course Name",
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 2.0),
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            // enabledBorder: OutlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.red, width: 5.0),
+                            // ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 2.0),
+                              borderRadius: BorderRadius.circular(25.0),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: channeNameController,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              labelText: "Enter The Channel Name",
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                              // enabledBorder: OutlineInputBorder(
-                              //   borderSide: BorderSide(color: Colors.red, width: 5.0),
-                              // ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: channeNameController,
+                          keyboardType: TextInputType.text,
+                          decoration: InputDecoration(
+                            labelText: "Enter The Channel Name",
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 2.0),
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            // enabledBorder: OutlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.red, width: 5.0),
+                            // ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 2.0),
+                              borderRadius: BorderRadius.circular(25.0),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: courseDescriptionController,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                              labelText: "Course Description",
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                              // enabledBorder: OutlineInputBorder(
-                              //   borderSide: BorderSide(color: Colors.red, width: 5.0),
-                              // ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: courseDescriptionController,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            labelText: "Course Description",
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 2.0),
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            // enabledBorder: OutlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.red, width: 5.0),
+                            // ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 2.0),
+                              borderRadius: BorderRadius.circular(25.0),
                             ),
                           ),
                         ),
-                        // ElevatedButton(
-                        //   onPressed: utils.uploadImage,
-                        //   style: ButtonStyle(
-                        //       backgroundColor:
-                        //           MaterialStateProperty.all(Colors.black),
-                        //       shape: MaterialStateProperty.all<
-                        //               RoundedRectangleBorder>(
-                        //           RoundedRectangleBorder(
-                        //               borderRadius: BorderRadius.circular(12.0),
-                        //               side: BorderSide(
-                        //                   color: Colors.white, width: 4.0)))),
-                        //   child: Text(
-                        //     utils.userimage.isEmpty
-                        //         ? "Upload Course Image"
-                        //         : "Reselect Image",
-                        //     style: TextStyle(color: Colors.white),
-                        //   ),
-                        // ),
+                      ),
+                      // ElevatedButton(
+                      //   onPressed: utils.uploadImage,
+                      //   style: ButtonStyle(
+                      //       backgroundColor:
+                      //           MaterialStateProperty.all(Colors.black),
+                      //       shape: MaterialStateProperty.all<
+                      //               RoundedRectangleBorder>(
+                      //           RoundedRectangleBorder(
+                      //               borderRadius: BorderRadius.circular(12.0),
+                      //               side: BorderSide(
+                      //                   color: Colors.white, width: 4.0)))),
+                      //   child: Text(
+                      //     utils.userimage.isEmpty
+                      //         ? "Upload Course Image"
+                      //         : "Reselect Image",
+                      //     style: TextStyle(color: Colors.white),
+                      //   ),
+                      // ),
 
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextFormField(
-                            controller: courseUrlController,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                              labelText: "Course URL",
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.white, width: 2.0),
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                              // enabledBorder: OutlineInputBorder(
-                              //   borderSide: BorderSide(color: Colors.red, width: 5.0),
-                              // ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: courseUrlController,
+                          keyboardType: TextInputType.multiline,
+                          decoration: InputDecoration(
+                            labelText: "Course URL",
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 2.0),
+                              borderRadius: BorderRadius.circular(25.0),
                             ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.white, width: 2.0),
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                            // enabledBorder: OutlineInputBorder(
+                            //   borderSide: BorderSide(color: Colors.red, width: 5.0),
+                            // ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DropdownButton(
-                            hint: Text('Choose a Category'),
-                            value: catSelected,
-                            onChanged: (newValue) {
-                              print(newValue + ": Value");
-                              setState(() {
-                                catSelected = newValue;
-                                print(catSelected);
-                              });
-                            },
-                            items: Provider.of<CourseProvider>(context,
-                                    listen: false)
-                                .cd
-                                .map((location) {
-                              return DropdownMenuItem(
-                                child: new Text(location.categoryName),
-                                value: location.id,
-                              );
-                            }).toList(),
-                          ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DropdownButton(
+                          hint: Text('Choose a Category'),
+                          value: catSelected,
+                          onChanged: (newValue) {
+                            print(newValue + ": Value");
+                            setState(() {
+                              catSelected = newValue;
+                              print(catSelected);
+                            });
+                          },
+                          items: Provider.of<CourseProvider>(context,
+                                  listen: false)
+                              .cd
+                              .map((location) {
+                            return DropdownMenuItem(
+                              child: new Text(location.categoryName),
+                              value: location.id,
+                            );
+                          }).toList(),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),

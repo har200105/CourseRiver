@@ -30,93 +30,88 @@ class _AcceptCourseState extends State<AcceptCourse> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              child: FutureBuilder(
-                future: courseProvider(true).fetchReqCourses(),
-                builder: (context, snapshot) {
-                  if (snapshot.data == ConnectionState.waiting &&
-                      !snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.data.length == 0) {
-                    return Center(
-                      child: Center(
-                        child: Text("Currently No Courses To Accept"),
-                      ),
-                    );
-                  } else {
-                    return Flexible(
-                      child: ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (context, index) {
-                            CourseData courseData = snapshot.data[index];
-                            return Padding(
-                              padding: EdgeInsets.all(5.0),
-                              child: Expanded(
-                                child: ListTile(
-                                  leading: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CourseDetails(
-                                                    id: courseData.id,
-                                                  )));
-                                    },
-                                    child: CircleAvatar(
-                                      radius: 20.0,
-                                      backgroundImage:
-                                          NetworkImage(courseData.coursePic),
-                                    ),
-                                  ),
-                                  title: Row(children: [
-                                    Text(
-                                      courseData.courseName,
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 10.0),
-                                    ),
-                                    IconButton(
-                                        onPressed: () {
-                                          courseProvider(false)
-                                              .acceptCourse(courseData.id)
-                                              .whenComplete(() => {
-                                                    Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                BottomNavigationBarExample()))
-                                                  });
-                                        },
-                                        icon: Icon(Icons.check)),
-                                    IconButton(
-                                        onPressed: () {
-                                          courseProvider(false)
-                                              .rejectCourse(courseData.id)
-                                              .whenComplete(() => {
-                                                    Navigator.pushReplacement(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                BottomNavigationBarExample()))
-                                                  });
-                                        },
-                                        icon: Icon(Icons.cancel)),
-                                  ]),
-                                  subtitle: Text(
-                                    courseData.channelName,
-                                    style: TextStyle(color: Colors.black),
-                                  ),
+            FutureBuilder(
+              future: courseProvider(true).fetchReqCourses(),
+              builder: (context, snapshot) {
+                if (snapshot.data == ConnectionState.waiting &&
+                    !snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (!snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.data.length == 0) {
+                  return Center(
+                    child: Center(
+                      child: Text("Currently No Courses To Accept"),
+                    ),
+                  );
+                } else {
+                  return Flexible(
+                    child: ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          CourseData courseData = snapshot.data[index];
+                          return Padding(
+                            padding: EdgeInsets.all(5.0),
+                            child: ListTile(
+                              leading: GestureDetector(
+                                onTap: () {
+                                  Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CourseDetails(
+                                                id: courseData.id,
+                                              )));
+                                },
+                                child: CircleAvatar(
+                                  radius: 20.0,
+                                  backgroundImage:
+                                      NetworkImage(courseData.coursePic),
                                 ),
                               ),
-                            );
-                          }),
-                    );
-                  }
-                },
-              ),
+                              title: Row(children: [
+                                Text(
+                                  courseData.courseName,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 10.0),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      courseProvider(false)
+                                          .acceptCourse(courseData.id)
+                                          .whenComplete(() => {
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            BottomNavigationBarExample()))
+                                              });
+                                    },
+                                    icon: Icon(Icons.check)),
+                                IconButton(
+                                    onPressed: () {
+                                      courseProvider(false)
+                                          .rejectCourse(courseData.id)
+                                          .whenComplete(() => {
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            BottomNavigationBarExample()))
+                                              });
+                                    },
+                                    icon: Icon(Icons.cancel)),
+                              ]),
+                              subtitle: Text(
+                                courseData.channelName,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          );
+                        }),
+                  );
+                }
+              },
             )
           ],
         ),
