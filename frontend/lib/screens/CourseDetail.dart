@@ -297,11 +297,8 @@ class _CourseDetailsState extends State<CourseDetails> {
                             child: Padding(
                               padding: const EdgeInsets.only(
                                   left: 18.0, top: 10.0, bottom: 10.0),
-                              child: Text(
-                                  "Course URL :" +
-                                          course.courseData.courseUrl ??
-                                      "",
-                                  style: TextStyle(color: Colors.white)),
+                              child: Text(course.courseData.courseUrl ?? "",
+                                  style: TextStyle(color: Colors.blue)),
                             ),
                           ),
                           Padding(

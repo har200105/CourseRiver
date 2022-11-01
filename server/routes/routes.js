@@ -52,7 +52,6 @@ router.post("/signup", async(req, res) => {
                 image
             });
             await newUser.save();
-            // const token = jwt.sign({ _id: newUser._id }, process.env.JWT_KEY);
             return res.status(200).json({message:"Otp sent successfully",success:true});
         })
     }
@@ -119,7 +118,6 @@ router.post('/verifyOTP', async (req, res) => {
 
 router.post('/resetPassword', async (req, res) => {
     const checkotp = await OTP.findOne({ otp: req.body.otp, email:req.body.email });
-    console.log(checkotp);
     if (!checkotp) {
         return res.status(401).json({message:"Not a Valid OTP",success:false});
     } else {
@@ -294,10 +292,6 @@ router.put('/ratecourse', reqLogin, async (req, res) => {
     if (updateRatings) {
         res.status(201).json(updateRatings);
     }
-});
-
-router.post('/adminData', (req, res) => {
-
 });
 
 

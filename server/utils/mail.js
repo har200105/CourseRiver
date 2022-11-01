@@ -16,7 +16,7 @@ exports.sendOTP = async (email, otp) => {
         html: `<h3>
         YOUR OTP IS ${otp} for verifying your account at Course River.
         </h3>`
-    }).then((s) => {
+    }).then(() => {
         console.log("Verification Email Sent")
     })
 }
@@ -29,7 +29,7 @@ exports.sendForgotPasswordOTP = async (email, otp) => {
         html: `<h3>
         YOUR OTP IS ${otp} for resetting your account at Course River.
         </h3>`
-    }).then((s) => {
+    }).then(() => {
         console.log("FORGOT PASSWORD Email Sent")
     })
 }

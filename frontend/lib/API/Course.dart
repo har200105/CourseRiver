@@ -176,13 +176,9 @@ class CourseAPI {
       print(jwt);
       final String url = "${API().api}/ratecourse";
       final Uri uri = Uri.parse(url);
-      final http.Response response = await client.put(uri, body: {
-        'courseId': id,
-        'newRatings': newRatings
-      }, headers: {
-        "Authorization": jwt
-        // "Authorization": cache.readCache("jwt")
-      });
+      final http.Response response = await client.put(uri,
+          body: {'courseId': id, 'newRatings': newRatings},
+          headers: {"Authorization": jwt});
       print(response.body);
       if (response.statusCode == 201) {
         print(response.body);
@@ -218,7 +214,6 @@ class CourseAPI {
         "Content-type": "application/json",
         "Accept": "application/json",
         "Access-Control-Allow-Origin": "*",
-        // "Authorization": cache.readCache("jwt")
       });
       if (response.statusCode == 201) {
         return response.body;
@@ -335,8 +330,6 @@ class CourseAPI {
         headers: {"Authorization": prefs.getString("jwt")});
 
     if (response.statusCode == 201) {
-      print("Ranjhaa");
-      //  print(response.body);
       return response.body;
     }
   }

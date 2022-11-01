@@ -56,9 +56,6 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       var userData = await authentication.loginUser(email, password);
       Map<String, dynamic> parsedData = await jsonDecode(userData);
-      print("object");
-      print(parsedData);
-
       final verified = parsedData['verified'];
       final success = parsedData['success'];
       final message = parsedData['message'];
@@ -108,7 +105,6 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       var userData = await authentication.resetPassword(email, password, otp);
       Map<String, dynamic> parsedData = await jsonDecode(userData);
-      print(parsedData);
       final success = parsedData['success'];
       final message = parsedData['message'];
       if (success) {
@@ -132,7 +128,6 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       var userData = await authentication.verifyEmail(email, otp);
       Map<String, dynamic> parsedData = await jsonDecode(userData);
-      print(parsedData);
       final success = parsedData['success'];
       final message = parsedData['message'];
       if (success) {
@@ -156,7 +151,6 @@ class AuthenticationProvider extends ChangeNotifier {
     try {
       var userData = await authentication.sendforgotPasswordOTP(email);
       Map<String, dynamic> parsedData = await jsonDecode(userData);
-      print(parsedData);
       final success = parsedData['success'];
       final message = parsedData['message'];
       if (success) {
@@ -175,7 +169,6 @@ class AuthenticationProvider extends ChangeNotifier {
   setName(String name) {
     this.name = name;
     notifyListeners();
-    print(name);
   }
 
   setImage(String image) {

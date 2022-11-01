@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'package:courseriver/API/Course.dart';
 import 'package:courseriver/models/Category.dart';
 import 'package:courseriver/models/Course.dart';
-import 'package:courseriver/models/IndvCourseData.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CourseProvider extends ChangeNotifier {
   CourseAPI courseAPI = CourseAPI();
@@ -135,8 +133,6 @@ class CourseProvider extends ChangeNotifier {
       var modelledData = Category.fromJson(jsonDecode(response));
       cd = modelledData.data;
       notifyListeners();
-      print("CD");
-      print(cd[0].categoryName);
     } catch (e) {
       print(e.toString());
     }
@@ -169,7 +165,6 @@ class CourseProvider extends ChangeNotifier {
       var modelledData = CourseData.fromJson(jsonDecode(response));
       courseData = modelledData;
       notifyListeners();
-      print(modelledData.courseName);
       return modelledData;
     } catch (e) {
       print(e.toString());
@@ -190,7 +185,6 @@ class CourseProvider extends ChangeNotifier {
   Future userRatedCourses() async {
     try {
       var response = await courseAPI.getUserCourse();
-      print("Response :" + response);
       var modelledData = Course.fromJson(jsonDecode(response));
       userRatedCourse = modelledData.data;
       notifyListeners();

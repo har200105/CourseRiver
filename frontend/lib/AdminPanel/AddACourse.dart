@@ -4,7 +4,6 @@ import 'package:courseriver/providers/AdminProvider.dart';
 import 'package:courseriver/providers/CourseProvider.dart';
 import 'package:courseriver/widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddACourse extends StatefulWidget {
@@ -27,18 +26,6 @@ class _AddACourseState extends State<AddACourse> {
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-  // List<String> categories = [
-  //   'MERN',
-  //   'Flutter',
-  //   'ReactNative',
-  //   'Django',
-  //   'Java',
-  //   'Python',
-  //   'React',
-  //   'Angular',
-  //   'GraphQL',
-  //   'PHP'
-  // ];
   String catSelected;
   @override
   Widget build(BuildContext context) {
@@ -46,19 +33,6 @@ class _AddACourseState extends State<AddACourse> {
     var userImage =
         Provider.of<UtilityNotifier>(context, listen: true).userimage;
     return Scaffold(
-      // appBar: AppBar(
-      //   leading: IconButton(onPressed: (){
-      //        Navigator.pushReplacement(
-      //                 context,
-      //                 MaterialPageRoute(
-      //                     builder: (context) => BottomNavigationBarExample()));
-      //   }, icon: Icon(Icons.arrow_back)),
-      //   backgroundColor: Colors.black,
-      //   title: Text("Course River",style: TextStyle(
-      //     color: Colors.white
-      //   )),
-      //   centerTitle: true,
-      // ),
       body: Container(
         child: SingleChildScrollView(
           child: Column(
@@ -94,9 +68,6 @@ class _AddACourseState extends State<AddACourse> {
                                   color: Colors.white, width: 2.0),
                               borderRadius: BorderRadius.circular(25.0),
                             ),
-                            // enabledBorder: OutlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.red, width: 5.0),
-                            // ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: const BorderSide(
                                   color: Colors.white, width: 2.0),
@@ -117,9 +88,6 @@ class _AddACourseState extends State<AddACourse> {
                                   color: Colors.white, width: 2.0),
                               borderRadius: BorderRadius.circular(25.0),
                             ),
-                            // enabledBorder: OutlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.red, width: 5.0),
-                            // ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: const BorderSide(
                                   color: Colors.white, width: 2.0),
@@ -140,9 +108,6 @@ class _AddACourseState extends State<AddACourse> {
                                   color: Colors.white, width: 2.0),
                               borderRadius: BorderRadius.circular(25.0),
                             ),
-                            // enabledBorder: OutlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.red, width: 5.0),
-                            // ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: const BorderSide(
                                   color: Colors.white, width: 2.0),
@@ -151,25 +116,6 @@ class _AddACourseState extends State<AddACourse> {
                           ),
                         ),
                       ),
-                      // ElevatedButton(
-                      //   onPressed: utils.uploadImage,
-                      //   style: ButtonStyle(
-                      //       backgroundColor:
-                      //           MaterialStateProperty.all(Colors.black),
-                      //       shape: MaterialStateProperty.all<
-                      //               RoundedRectangleBorder>(
-                      //           RoundedRectangleBorder(
-                      //               borderRadius: BorderRadius.circular(12.0),
-                      //               side: BorderSide(
-                      //                   color: Colors.white, width: 4.0)))),
-                      //   child: Text(
-                      //     utils.userimage.isEmpty
-                      //         ? "Upload Course Image"
-                      //         : "Reselect Image",
-                      //     style: TextStyle(color: Colors.white),
-                      //   ),
-                      // ),
-
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
@@ -187,9 +133,6 @@ class _AddACourseState extends State<AddACourse> {
                                   color: Colors.white, width: 2.0),
                               borderRadius: BorderRadius.circular(25.0),
                             ),
-                            // enabledBorder: OutlineInputBorder(
-                            //   borderSide: BorderSide(color: Colors.red, width: 5.0),
-                            // ),
                           ),
                         ),
                       ),
@@ -277,18 +220,6 @@ class _AddACourseState extends State<AddACourse> {
                   ),
                 ),
               ),
-              // ElevatedButton(
-              //   onPressed: () {},
-              //   style: ButtonStyle(
-              //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              //           RoundedRectangleBorder(
-              //               borderRadius: BorderRadius.circular(18.0),
-              //               side: BorderSide(color: Colors.teal, width: 2.0)))),
-              //   child: Text(
-              //     "Add Course",
-              //     style: TextStyle(color: Colors.white),
-              //   ),
-              // )
             ],
           ),
         ),

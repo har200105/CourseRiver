@@ -155,12 +155,14 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Padding(
                               padding:
                                   const EdgeInsets.only(top: 100.0, left: 15.0),
-                              child: Text(
-                                "Course River",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 40.0),
+                              child: Center(
+                                child: Text(
+                                  "Course River",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 40.0),
+                                ),
                               ),
                             ))),
                 appBar: AppBar(
