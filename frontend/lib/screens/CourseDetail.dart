@@ -23,7 +23,6 @@ class _CourseDetailsState extends State<CourseDetails> {
   bool isShow = false;
   double newRating = 0;
   bool isLoggedIn = false;
-  // bool isAlreadyRated = false;
   double currentRatings = 5.0;
   String name;
   bool isLoadingRatingbar = false;
@@ -55,12 +54,6 @@ class _CourseDetailsState extends State<CourseDetails> {
         isLoggedIn = true;
       }
     });
-    // if (Provider.of<CourseProvider>(context, listen: false)
-    //     .courseData
-    //     .ratedBy
-    //     .contains(id)) {
-    //   setState(() {});
-    // } else {}
   }
 
   Future<void> rateAgain() async {
@@ -81,7 +74,6 @@ class _CourseDetailsState extends State<CourseDetails> {
         });
 
     setState(() {
-      // isAlreadyRated = false;
       currentRatings = ((currentRatings + 3) / 2);
     });
     setState(() {});
@@ -217,7 +209,6 @@ class _CourseDetailsState extends State<CourseDetails> {
                             setState(() {
                               currentRatings =
                                   ((currentRatings + newRating) / 2);
-                              // isAlreadyRated = true;
                               Provider.of<CourseProvider>(context,
                                       listen: false)
                                   .getCourseData(widget.id);

@@ -18,8 +18,6 @@ class _RequestACourseState extends State<RequestACourse> {
   TextEditingController channeNameController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  //   List<String> categories = ['MERN', 'Flutter', 'ReactNative', 'Django','Java','Python','React'
-  // ,'Angular','GraphQL','PHP'];
   String _selectedLocation;
   @override
   void initState() {
@@ -129,27 +127,6 @@ class _RequestACourseState extends State<RequestACourse> {
                           ),
                         ),
                       ),
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     utils.uploadImage();
-                      //   },
-                      //   style: ButtonStyle(
-                      //       backgroundColor:
-                      //           MaterialStateProperty.all(Colors.black),
-                      //       shape: MaterialStateProperty.all<
-                      //               RoundedRectangleBorder>(
-                      //           RoundedRectangleBorder(
-                      //               borderRadius: BorderRadius.circular(12.0),
-                      //               side: BorderSide(
-                      //                   color: Colors.white, width: 4.0)))),
-                      //   child: Text(
-                      //     utils.userimage.isEmpty
-                      //         ? "Upload Course Image"
-                      //         : "Reselect Image",
-                      //     style: TextStyle(color: Colors.white),
-                      //   ),
-                      // ),
-
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
@@ -213,33 +190,6 @@ class _RequestACourseState extends State<RequestACourse> {
                           style: TextStyle(color: Colors.white))),
                 ),
               ),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     Provider.of<CourseProvider>(context, listen: false)
-              //         .addCourseReq(
-              //             courseNameController.text,
-              //             courseDescriptionController.text,
-              //             utils.userimage,
-              //             channeNameController.text,
-              //             courseUrlController.text,
-              //             _selectedLocation)
-              //         .whenComplete(() => {
-              //               courseNameController.clear(),
-              //               courseUrlController.clear(),
-              //               channeNameController.clear(),
-              //               courseDescriptionController.clear(),
-              //             });
-              //   },
-              //   style: ButtonStyle(
-              //       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              //           RoundedRectangleBorder(
-              //               borderRadius: BorderRadius.circular(18.0),
-              //               side: BorderSide(color: Colors.teal, width: 2.0)))),
-              //   child: Text(
-              //     "Add Course",
-              //     style: TextStyle(color: Colors.white),
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
                 child: SizedBox(

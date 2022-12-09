@@ -62,7 +62,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                       const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
                   child: TextFormField(
                       controller: emailController,
-                      // focusNode: FocusNode(),
                       style: TextStyle(color: Colors.black),
                       decoration: InputDecoration(
                         labelText: "Email",
@@ -82,26 +81,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                       // ignore:missing_return
                       validator: (a) {}),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 10.0),
-                //   child: ElevatedButton(
-                //       style: ButtonStyle(
-                //           backgroundColor:
-                //               MaterialStateProperty.all(Colors.black),
-                //           shape:
-                //               MaterialStateProperty.all<RoundedRectangleBorder>(
-                //                   RoundedRectangleBorder(
-                //                       borderRadius: BorderRadius.circular(5.0),
-                //                       side: BorderSide(
-                //                           color: Colors.white, width: 2.0)))),
-                //       onPressed: () async {
-                //         await auth.sendForgotPasswordOTP(
-                //             context, emailController.text);
-                //         FocusScope.of(context).unfocus();
-                //       },
-                //       child: Text("Send OTP",
-                //           style: TextStyle(color: Colors.white))),
-                // ),
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
                   child: SizedBox(
@@ -124,7 +103,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                   padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
                   child: TextFormField(
                     controller: passwordController,
-                    // focusNode: FocusNode(),
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
@@ -153,7 +131,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                   padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
                   child: TextFormField(
                     controller: confirmPasswordController,
-                    // focusNode: FocusNode(),
                     style: TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       suffixIcon: IconButton(
@@ -178,31 +155,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                     ),
                   ),
                 ),
-                // Padding(
-                //   padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
-                //   child: TextFormField(
-                //     controller: otpController,
-                //     // focusNode: FocusNode(),
-                //     style: TextStyle(color: Colors.black),
-                //     decoration: InputDecoration(
-                //       labelText: "OTP",
-                //       hintStyle: TextStyle(
-                //           fontSize: 18.0,
-                //           fontFamily: 'Comic',
-                //           color: Colors.black),
-                //       focusedBorder: OutlineInputBorder(
-                //         borderSide:
-                //             const BorderSide(color: Colors.black, width: 2.0),
-                //         borderRadius: BorderRadius.circular(25.0),
-                //       ),
-                //       enabledBorder: OutlineInputBorder(
-                //         borderSide:
-                //             const BorderSide(color: Colors.black, width: 2.0),
-                //         borderRadius: BorderRadius.circular(25.0),
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
@@ -222,29 +174,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                     },
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 10.0),
-                //   child: ElevatedButton(
-                //       style: ButtonStyle(
-                //           backgroundColor:
-                //               MaterialStateProperty.all(Colors.black),
-                //           shape:
-                //               MaterialStateProperty.all<RoundedRectangleBorder>(
-                //                   RoundedRectangleBorder(
-                //                       borderRadius: BorderRadius.circular(5.0),
-                //                       side: BorderSide(
-                //                           color: Colors.white, width: 2.0)))),
-                //       onPressed: () async {
-                //         await auth.resetPassword(
-                //             context,
-                //             emailController.text.trim().toLowerCase(),
-                //             passwordController.text.trim(),
-                //             otpController.text.trim());
-                //         FocusScope.of(context).unfocus();
-                //       },
-                //       child: Text("Confirm",
-                //           style: TextStyle(color: Colors.white))),
-                // ),
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
                   child: SizedBox(

@@ -140,7 +140,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                 Padding(
                   padding: EdgeInsets.only(top: 25.0, left: 80.0, right: 80.0),
                   child: TextFormField(
-                    // focusNode: FocusNode(),
                     controller: passwordController,
                     obscureText: isShow,
                     style: TextStyle(color: Colors.black),
@@ -171,33 +170,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                     ),
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 10.0),
-                //   child: ElevatedButton(
-                //       style: ButtonStyle(
-                //           backgroundColor:
-                //               MaterialStateProperty.all(Colors.black),
-                //           shape:
-                //               MaterialStateProperty.all<RoundedRectangleBorder>(
-                //                   RoundedRectangleBorder(
-                //                       borderRadius: BorderRadius.circular(5.0),
-                //                       side: BorderSide(
-                //                           color: Colors.white, width: 2.0)))),
-                //       onPressed: () async {
-                //         FocusScope.of(context).unfocus();
-                //         if (formkey.currentState.validate()) {
-                //           auth.LoginService(
-                //             context,
-                //             emailEditingController.text.trim().toLowerCase(),
-                //             passwordController.text.trim(),
-                //           );
-                //         } else {
-                //           print("Not Validated");
-                //         }
-                //       },
-                //       child:
-                //           Text("Login", style: TextStyle(color: Colors.white))),
-                // ),
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
                   child: SizedBox(

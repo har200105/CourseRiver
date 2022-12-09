@@ -256,33 +256,6 @@ class _SignUpState extends State<SignUp> with TickerProviderStateMixin {
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 10.0),
-                //   child: ElevatedButton(
-                //       style: ButtonStyle(
-                //           backgroundColor:
-                //               MaterialStateProperty.all(Colors.black),
-                //           shape:
-                //               MaterialStateProperty.all<RoundedRectangleBorder>(
-                //                   RoundedRectangleBorder(
-                //                       borderRadius: BorderRadius.circular(5.0),
-                //                       side: BorderSide(
-                //                           color: Colors.white, width: 2.0)))),
-                //       onPressed: () async {
-                //         FocusScope.of(context).unfocus();
-                //         if (formkey.currentState.validate()) {
-                //           auth.Signup(
-                //               context,
-                //               userNameEditingController.text.trim(),
-                //               emailEditingController.text.trim().toLowerCase(),
-                //               passwordController.text.trim(),
-                //               utils.userimage);
-                //         }
-                //       },
-                //       child: Text("Signup",
-                //           style: TextStyle(color: Colors.white))),
-                // ),
-
                 Padding(
                   padding: const EdgeInsets.only(top: 15.0),
                   child: SizedBox(

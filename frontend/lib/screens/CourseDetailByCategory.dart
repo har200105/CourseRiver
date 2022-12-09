@@ -17,15 +17,6 @@ class CourseDetailsCategory extends StatefulWidget {
 }
 
 class _CourseDetailsCategoryState extends State<CourseDetailsCategory> {
-  //  var currentCourse;
-  //   Future<void> getCourse() async {
-  //   var response = await http.get(Uri.parse(
-  //       "https://courseriver.herokuapp.com/getCourseByCat/${widget.category}"));
-  //   print(response.body);
-  //   setState(() {
-  //     currentCourse = jsonDecode(response.body);
-  //   });
-  // }
 
   @override
   void initState() {

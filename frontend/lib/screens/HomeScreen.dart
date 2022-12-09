@@ -282,7 +282,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 );
                               });
-                          // }
                         })),
                     Padding(
                       padding: EdgeInsets.only(top: 15.0, left: 5.0),

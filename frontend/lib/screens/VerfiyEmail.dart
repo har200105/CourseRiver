@@ -79,30 +79,6 @@ class _VerifyEmailState extends State<VerifyEmail> {
                     // ignore:missing_return
                     validator: (a) {}),
               ),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.only(top: 30.0, left: 80.0, right: 80.0),
-              //   child: TextFormField(
-              //       controller: otpController,
-              //       focusNode: FocusNode(),
-              //       style: TextStyle(color: Colors.black),
-              //       decoration: InputDecoration(
-              //         labelText: "OTP",
-              //         focusedBorder: OutlineInputBorder(
-              //           borderSide:
-              //               const BorderSide(color: Colors.black, width: 2.0),
-              //           borderRadius: BorderRadius.circular(25.0),
-              //         ),
-              //         enabledBorder: OutlineInputBorder(
-              //           borderSide:
-              //               const BorderSide(color: Colors.black, width: 2.0),
-              //           borderRadius: BorderRadius.circular(25.0),
-              //         ),
-              //         hintStyle: TextStyle(fontSize: 18.0, color: Colors.black),
-              //       ),
-              //       // ignore:missing_return
-              //       validator: (a) {}),
-              // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
