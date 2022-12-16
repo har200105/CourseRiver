@@ -3,13 +3,12 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const Connection = require('./connection/connection');
-require('./models/user.js');
-require('./models/course.js');
 require('./models/comment');
 app.use(bodyParser());
 app.use(express.json());
 
-app.use("/", require('./routes/routes'));
+app.use("/", require('./routes/user'));
+app.use("/", require('./routes/course'));
 
 
 const PORT = 4000;
