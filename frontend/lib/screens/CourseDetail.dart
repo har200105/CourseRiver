@@ -10,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 
+import '../Services/Api.dart';
+
 class CourseDetails extends StatefulWidget {
   final String id;
   const CourseDetails({Key key, this.id});
@@ -60,18 +62,15 @@ class _CourseDetailsState extends State<CourseDetails> {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var ids = preferences.getString("jwt");
     print(ids);
-    var response = await http.put(
-        Uri.parse(
-            "https://courseriver.herokuapp.com/removeRating/${widget.id}"),
-        headers: {
-          "Authorization": ids
-        },
-        body: {
-          'newRatings': ((currentRatings + 3) / 2).toString()
-        }).then((value) => {
-          Provider.of<CourseProvider>(context, listen: false)
-              .getCourseData(widget.id)
-        });
+    var response = await http
+        .put(Uri.parse("${API().api}/removeRating/${widget.id}"), headers: {
+      "Authorization": ids
+    }, body: {
+      'newRatings': ((currentRatings + 3) / 2).toString()
+    }).then((value) => {
+              Provider.of<CourseProvider>(context, listen: false)
+                  .getCourseData(widget.id)
+            });
 
     setState(() {
       currentRatings = ((currentRatings + 3) / 2);

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:courseriver/Services/Api.dart';
 import 'package:courseriver/providers/CourseProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -17,9 +18,8 @@ class _SearchPageState extends State<SearchPage> {
   bool hasSearched = false;
 
   Future<dynamic> searchCourse(String course) async {
-    var response = await http.post(
-        Uri.parse("https://courseriver.herokuapp.com/searchcourse"),
-        body: {'query': course});
+    var response = await http
+        .post(Uri.parse("${API().api}/searchcourse"), body: {'query': course});
 
     setState(() {
       searchedCourses = jsonDecode(response.body);

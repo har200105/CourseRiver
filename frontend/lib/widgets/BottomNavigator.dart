@@ -20,7 +20,6 @@ class _BottomNavigationBarExampleState
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        // Navigator.pushReplacement(context, route)
         return Future.value(false);
       },
       child: Scaffold(

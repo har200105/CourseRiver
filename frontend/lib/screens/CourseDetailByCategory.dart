@@ -17,12 +17,6 @@ class CourseDetailsCategory extends StatefulWidget {
 }
 
 class _CourseDetailsCategoryState extends State<CourseDetailsCategory> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     CourseProvider courseProvider(bool renderUi) =>
@@ -53,7 +47,7 @@ class _CourseDetailsCategoryState extends State<CourseDetailsCategory> {
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
-                } else if (snapshot.data.length == 0) {
+                } else if (snapshot.data != null && snapshot.data.length == 0) {
                   return Center(
                       child: Padding(
                     padding: const EdgeInsets.only(top: 20.0),

@@ -66,7 +66,6 @@ class CourseProvider extends ChangeNotifier {
       print(category);
       var response = await courseAPI.fetchCourseByCategory(category);
       var modelledData = Course.fromJson(jsonDecode(response));
-      print(modelledData.data);
       return modelledData.data;
     } catch (e) {
       print(e.toString());

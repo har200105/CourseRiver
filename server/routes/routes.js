@@ -144,10 +144,10 @@ router.post('/sendforgotpasswordOTP', async (req, res) => {
     const { email } = req.body;
     const user = await User.find({ email });
     if (!user) {
-      return res.status(201).json({
-        success: false,
-        message: "User not found"
-    });
+        return res.status(201).json({
+            success: false,
+            message: "User not found"
+        });
     }
     const otp = otpgen.generate(6, {
             digits: true,
@@ -385,8 +385,7 @@ router.put("/rejectCourse/:id",reqLogin,async(req,res)=>{
 
 router.delete("/deleteCourse/:id",async(req,res)=>{
     try{
-        const deleted = await Courses.findByIdAndDelete(req.params.id);
-        console.log(deleted);
+         await Courses.findByIdAndDelete(req.params.id);
         res.status(201).json({data:"Deleted"})
     }catch(e){
         res.status(401).json({error:"Error Occured"});
@@ -422,7 +421,6 @@ router.post("/addCategory",async(req,res)=>{
 router.post("/addComment/:id",reqLogin,async(req,res)=>{
     try{
     const {commentedText}=req.body;
-    console.log(req.body)
     if(!commentedText){
         return res.status(401).json({error:"Please Add Comment Text"});
     }else{

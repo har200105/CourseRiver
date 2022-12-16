@@ -78,14 +78,12 @@ class CourseAPI {
 
   Future fetchCourseByCategory(String category) async {
     try {
-      var response = await http.get(
-          Uri.parse(
-              "https://courseriver.herokuapp.com/getCourseByCat/${category}"),
-          headers: {
-            "Content-type": "application/json",
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": "*"
-          });
+      var response = await http
+          .get(Uri.parse("${API().api}/getCourseByCat/${category}"), headers: {
+        "Content-type": "application/json",
+        "Accept": "application/json",
+        "Access-Control-Allow-Origin": "*"
+      });
       if (response.statusCode == 201) {
         return response.body;
       }
@@ -294,9 +292,8 @@ class CourseAPI {
 
   Future getSearchedCourses(String text) async {
     try {
-      var response = await http.post(
-          Uri.parse("https://courseriver.herokuapp.com/searchcourse"),
-          body: {'query': text});
+      var response = await http
+          .post(Uri.parse("${API().api}/searchcourse"), body: {'query': text});
 
       if (response.statusCode == 201) {
         print(response.body);
@@ -309,14 +306,12 @@ class CourseAPI {
 
   Future<void> commentCourse(String commentText, String courseId) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    var comment = await http.post(
-        Uri.parse("https://courseriver.herokuapp.com/addComment/${courseId}"),
-        body: {
-          'commentedText': commentText,
-        },
-        headers: {
-          'Authorization': prefs.getString("jwt")
-        });
+    var comment = await http
+        .post(Uri.parse("${API().api}/addComment/${courseId}"), body: {
+      'commentedText': commentText,
+    }, headers: {
+      'Authorization': prefs.getString("jwt")
+    });
 
     if (comment.statusCode == 201) {
       return comment.body;
