@@ -7,7 +7,7 @@ const Category = require('../models/category');
 const User = require("../models/user");
 
 const reqLogin = require('../middleware/reqLogin');
-const { reqAdmin } = require('../middleware/reqAdmin');
+const reqAdmin = require('../middleware/reqAdmin');
 
 
 router.get('/allcourses', (req, res) => {

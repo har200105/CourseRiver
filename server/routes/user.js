@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const b = require('bcryptjs');
+const bcrypt = require('bcryptjs');
 
 require("dotenv").config();
 
@@ -22,7 +22,7 @@ router.post("/signup", async(req, res) => {
         const exist = await User.findOne({ email });
         
         if (exist) {
-            return res.json({success:false,message:"User Already Exists"});
+            return res.status(400).json({success:false,message:"User Already Exists"});
         }
         
         else {
@@ -38,7 +38,7 @@ router.post("/signup", async(req, res) => {
             });
             await newOTP.save();
             sendOTP(email, otp);
-            b.hash(password, 8)
+            bcrypt.hash(password, 8)
             .then(async(hashedpassword) => {
             const newUser = User({
                 email,
@@ -63,7 +63,7 @@ router.post("/login", async(req, res) => {
         const exist = await User.findOne({email});
         console.log(exist);
         if (exist && exist.verified) {
-            b.compare(password,exist.password).then((matched)=>{
+            bcrypt.compare(password,exist.password).then((matched)=>{
                 if(matched){
                 const token = jwt.sign({ _id: exist._id }, process.env.JWT_KEY);
                 return res.status(200).json({name:exist.name,
