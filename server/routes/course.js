@@ -29,8 +29,8 @@ router.get('/getTrending', async(req, res) => {
         .then((course) => {
             res.status(201).json({data:course});
         })
-        .catch((e) => {
-            console.log(e);
+        .catch((err) => {
+            console.log(err);
         })
 });
 

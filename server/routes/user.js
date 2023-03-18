@@ -13,7 +13,6 @@ const { sendOTP } = require('../utils/mail');
 
 
 router.post("/signup", async(req, res) => {
-    console.log(req.body);
     const {email,password,name,image} = req.body;
     if(!email || !password || !name){
         return res.status(401).json({message:"Please Add All The Feilds",success:false})
@@ -61,7 +60,6 @@ router.post("/login", async(req, res) => {
     const {email,password} = req.body;
     try {
         const exist = await User.findOne({email});
-        console.log(exist);
         if (exist && exist.verified) {
             bcrypt.compare(password,exist.password).then((matched)=>{
                 if(matched){
@@ -89,7 +87,6 @@ router.post("/login", async(req, res) => {
 
 router.post('/verifyOTP', async (req, res) => {
     const checkotp = await OTP.findOne({ otp: req.body.otp, email:req.body.email });
-    console.log(checkotp);
     if (!checkotp) {
         return res.json({message:"Not a Valid OTP",success:false});
     } else {
@@ -100,7 +97,6 @@ router.post('/verifyOTP', async (req, res) => {
         }, {
             new: true
         }).then(async (s) => {
-            console.log(s)
             await OTP.findOneAndDelete({ email: checkotp.email });
         }).then(() => {
             res.status(200).json({
