@@ -4,13 +4,10 @@ const router = express.Router();
 const Courses = require("../models/course");
 const Comment = require('../models/comment');
 const Category = require('../models/category');
+const User = require("../models/user");
 
 const reqLogin = require('../middleware/reqLogin');
-
-
-router.get('/', (req, res) => {
-    res.send("CourseRiver");
-});
+const { reqAdmin } = require('../middleware/reqAdmin');
 
 
 router.get('/allcourses', (req, res) => {
@@ -62,19 +59,6 @@ router.get('/getRecent', async(req, res) => {
         })
 });
 
-// {
-//     "courseName":"Flutter Social App",
-//     "courseDescription":"Its a Flutter course for making a social app using flutter and firebase as a backend",
-//     "channelName":"Abhishvek",
-//     "courseUrl":"https://www.youtube.com/playlist?list=PLRT5VDuA0QGW4VTls7y-5-EJd8rMdIegW",
-//     "isHighestRated":true,
-//     "isRecentlyAdded":true,
-//     "isTrendingCourse":"true",
-//     "coursePic":"http://res.cloudinary.com/harshit111/image/upload/v1626688025/rxmyz6dyjpusgs0d9wvn.jpg",
-//     "catgeory":"Flutter",
-//     "courseRatings":"3.5",
-//     "coursePublishedOn":"2021/01/04"
-// }
 
 
 router.post('/addCourse', reqLogin,async(req, res) => {
@@ -126,11 +110,8 @@ router.put('/ratecourse', reqLogin, async (req, res) => {
         }
     });
 
-    if (addInUser) {
-        console.log("Added in User");
-    }
 
-    if (updateRatings) {
+    if (updateRatings && addInUser) {
         res.status(201).json(updateRatings);
     }
 });
@@ -163,7 +144,6 @@ router.get('/getCourse/:id', async(req, res) => {
     .populate("comments","commentedText commentedBy")
     .then(course => {
         res.status(201).json(course);
-
     }).catch((e) => {
         console.log(e);
     })
@@ -180,7 +160,7 @@ router.get('/getCourseByCat/:category', async(req, res) => {
 });
 
 router.put('/removeRating/:id', reqLogin,async(req, res) => {
-    const ress = await Courses.findByIdAndUpdate(req.user._id, {
+    const data = await Courses.findByIdAndUpdate(req.user._id, {
         $pull: {
             ratedBy: req.user._id
         }
@@ -191,10 +171,10 @@ router.put('/removeRating/:id', reqLogin,async(req, res) => {
             ratingGiven:req.params.id
         }
     })
-    res.status(201).json(ress, removeFromUser);
+    res.status(201).json(data, removeFromUser);
 });
 
-router.get('/reqCourses',async(req,res)=>{
+router.get('/reqCourses',reqLogin,reqAdmin,async(req,res)=>{
     try{
     const courses = await Courses.find({isAccepted:false});
     res.status(201).json({data:courses});
@@ -203,7 +183,7 @@ router.get('/reqCourses',async(req,res)=>{
     }
 });
 
-router.put("/acceptCourse/:id",reqLogin,async(req,res)=>{
+router.put("/acceptCourse/:id",reqLogin,reqAdmin,async(req,res)=>{
     try{
         const accepted = await Courses.findByIdAndUpdate(req.params.id,{
             isAccepted:true
@@ -214,9 +194,9 @@ router.put("/acceptCourse/:id",reqLogin,async(req,res)=>{
     }
 });
 
-router.put("/rejectCourse/:id",reqLogin,async(req,res)=>{
+router.put("/rejectCourse/:id",reqLogin,reqAdmin,async(req,res)=>{
     try{
-        const accepted = await Courses.findByIdAndDelete(req.params.id);
+        await Courses.findByIdAndDelete(req.params.id);
         res.status(201).json({success:true,message:"Course Deleted"}); 
     }catch(e){
         res.status(401).json({error:"Error Occured"});
@@ -224,7 +204,7 @@ router.put("/rejectCourse/:id",reqLogin,async(req,res)=>{
 });
 
 
-router.delete("/deleteCourse/:id",async(req,res)=>{
+router.delete("/deleteCourse/:id",reqLogin,reqAdmin,async(req,res)=>{
     try{
          await Courses.findByIdAndDelete(req.params.id);
         res.status(201).json({data:"Deleted"})
@@ -243,7 +223,7 @@ router.get("/getCategory",async(req,res)=>{
 });
 
 
-router.post("/addCategory",async(req,res)=>{
+router.post("/addCategory",reqLogin,reqAdmin,async(req,res)=>{
     try{
         const {categoryName,categoryPic} = req.body;
         const category = Category({
@@ -251,8 +231,8 @@ router.post("/addCategory",async(req,res)=>{
             categoryPic
         });
 
-        await category.save().then((s)=>{
-            res.status(201).json({data:s})
+        await category.save().then((data)=>{
+            res.status(201).json({data})
         })
     }catch(e){
         res.status(401).json({error:"Error Occured"});
@@ -271,13 +251,12 @@ router.post("/addComment/:id",reqLogin,async(req,res)=>{
             commentedCourse:req.params.id
         });
         await comment.save().then((d)=>{
-            console.log(d)
             Courses.findByIdAndUpdate(req.params.id,{
                 hasBeenCommented:true,
                 $push:{
                     comments:d._id
                 }
-            }).then((p)=>{
+            }).then(()=>{
                 res.status(201).json("Comment Added")
             })
         });
