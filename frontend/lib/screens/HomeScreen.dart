@@ -34,7 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
       image = prefs.getString("imaged");
       name = prefs.getString("name");
       isAdmin = prefs.getBool("admin");
-      print(prefs.getBool("admin"));
     });
   }
 

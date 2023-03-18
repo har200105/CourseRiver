@@ -14,7 +14,6 @@ Widget recentlyAddedCourse(
   return Padding(
     padding: EdgeInsets.all(5.0),
     child: Container(
-      // height: 300.0,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [

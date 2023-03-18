@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:courseriver/models/Course.dart';
 import 'package:courseriver/providers/CourseProvider.dart';
 import 'package:courseriver/widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 
 import '../Services/Api.dart';
 
@@ -48,11 +45,9 @@ class _CourseDetailsState extends State<CourseDetails> {
     setState(() {
       idU = id;
     });
-    print("ID : " + id);
     setState(() {
       name = preferences.getString("name");
       if (id != null) {
-        print("iddd : " + id);
         isLoggedIn = true;
       }
     });
@@ -61,7 +56,6 @@ class _CourseDetailsState extends State<CourseDetails> {
   Future<void> rateAgain() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     var ids = preferences.getString("jwt");
-    print(ids);
     var response = await http
         .put(Uri.parse("${API().api}/removeRating/${widget.id}"), headers: {
       "Authorization": ids
@@ -171,7 +165,6 @@ class _CourseDetailsState extends State<CourseDetails> {
                             isShow = true;
                             newRating = rating;
                           });
-                          print(rating);
                         },
                       )
                     : isLoggedIn
@@ -344,7 +337,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                                           listen: false)
                                       .getCourseData(widget.id);
                                 })
-                              : print(commentController.text);
+                              : null;
                         },
                         child: Text(
                           "Comment",

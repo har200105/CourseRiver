@@ -188,8 +188,6 @@ class _LoginState extends State<Login> with TickerProviderStateMixin {
                               emailEditingController.text.trim().toLowerCase(),
                               passwordController.text.trim(),
                             );
-                          } else {
-                            print("Not Validated");
                           }
                         },
                         child: Text("Login")),

@@ -34,7 +34,6 @@ class CourseAPI {
         "Access-Control-Allow-Origin": "*"
       });
       if (response.statusCode == 201) {
-        print(response.statusCode);
         return response.body;
       }
     } catch (e) {
@@ -159,7 +158,6 @@ class CourseAPI {
         "Access-Control-Allow-Origin": "*"
       });
       if (response.statusCode == 201) {
-        print(response.body);
         return response.body;
       }
     } catch (e) {
@@ -171,15 +169,12 @@ class CourseAPI {
     try {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       var jwt = preferences.getString("jwt");
-      print(jwt);
       final String url = "${API().api}/ratecourse";
       final Uri uri = Uri.parse(url);
       final http.Response response = await client.put(uri,
           body: {'courseId': id, 'newRatings': newRatings},
           headers: {"Authorization": jwt});
-      print(response.body);
       if (response.statusCode == 201) {
-        print(response.body);
         return response.body;
       }
     } catch (e) {
@@ -189,14 +184,11 @@ class CourseAPI {
 
   Future rateAgain(String id) async {
     try {
-      print("cwef");
       final String url = "${API().api}/removeRating/${id}";
       final Uri uri = Uri.parse(url);
       final http.Response response = await client
           .put(uri, headers: {"Authorization": cache.readCache("jwt")});
-      print(response.body);
       if (response.statusCode == 201) {
-        print(response.body);
         return response.body;
       }
     } catch (e) {
@@ -233,8 +225,6 @@ class CourseAPI {
       final String url = "${API().api}/addCourse";
       String courseRatings = "4";
       final Uri uri = Uri.parse(url);
-      print(url);
-      print(courseName);
       final http.Response response = await http.post(uri, body: {
         'courseName': courseName,
         'courseDescription': courseDescription,
@@ -247,7 +237,6 @@ class CourseAPI {
         "Authorization": prefs.getString("jwt")
       });
       if (response.statusCode == 201) {
-        print(response.body);
         return response.body;
       }
     } catch (e) {
@@ -267,8 +256,6 @@ class CourseAPI {
       final String url = "${API().api}/addReqCourse";
       String courseRatings = "4";
       final Uri uri = Uri.parse(url);
-      print(url);
-      print(courseName);
       final http.Response response = await http.post(uri, body: {
         'courseName': courseName,
         'courseDescription': courseDescription,
@@ -280,9 +267,7 @@ class CourseAPI {
       }, headers: {
         "Authorization": prefs.getString("jwt")
       });
-      print(response.body);
       if (response.statusCode == 201) {
-        print(response.body);
         return response.body;
       }
     } catch (e) {
@@ -296,7 +281,6 @@ class CourseAPI {
           .post(Uri.parse("${API().api}/searchcourse"), body: {'query': text});
 
       if (response.statusCode == 201) {
-        print(response.body);
         return response.body;
       }
     } catch (e) {

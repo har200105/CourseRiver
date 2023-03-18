@@ -4,8 +4,6 @@ import 'package:courseriver/widgets/BottomNavigator.dart';
 import 'package:flutter/material.dart';
 
 class Decider extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     final Cache cache = Cache();

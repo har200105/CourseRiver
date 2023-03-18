@@ -169,8 +169,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                     controller: otpController,
                     showCursor: true,
                     onCompleted: (pin) {
-                      print("fdf");
-                      print(otpController.text);
                     },
                   ),
                 ),

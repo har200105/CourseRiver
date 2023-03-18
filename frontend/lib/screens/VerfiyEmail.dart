@@ -93,7 +93,6 @@ class _VerifyEmailState extends State<VerifyEmail> {
                   controller: otpController,
                   showCursor: true,
                   onCompleted: (pin) {
-                    print(otpController.text);
                   },
                 ),
               ),
